@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Ticket</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="form-container">
+
+        <h2>Create Support Ticket</h2>
+
+        <form id="ticketForm">
+
+            <label>Email</label>
+            <input type="email" id="email" placeholder="Enter Email" required>
+
+            <label>Category</label>
+            <select id="category">
+                <option>Technical Issue</option>
+                <option>Billing</option>
+                <option>Account Problem</option>
+                <option>Feature Request</option>
+            </select>
+
+            <label>Priority</label>
+            <select id="priority">
+                <option>Low</option>
+                <option>Medium</option>
+                <option>High</option>
+            </select>
+
+            <label>Description</label>
+            <textarea id="description" rows="5" placeholder="Describe your issue" required></textarea>
+
+            <button type="submit">
+                Submit Ticket
+            </button>
+
+        </form>
+
+        <p>
+            <a href="dashboard.html">Back to Dashboard</a>
+        </p>
+
+    </div>
+<script>
+alert("CREATE TICKET SCRIPT LOADED");
+
+document.getElementById("ticketForm").addEventListener("submit", async (e) => {
+
+    alert("BUTTON CLICKED");
+
+    e.preventDefault();
+
+    console.log("Submit Ticket Clicked");
+
+    const email = document.getElementById("email").value;
+    const category = document.getElementById("category").value;
+    const priority = document.getElementById("priority").value;
+    const description = document.getElementById("description").value;
+
+    alert("About to send request");
+
+const response = await fetch("/create-ticket", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            email,
+            category,
+            priority,
+            description
+        })
+    });
+    
+    alert("Request sent");
+    const data = await response.json();
+
+    alert(data.message);
+
+    if(response.ok){
+        document.getElementById("ticketForm").reset();
+    }
+});
+</script>
+
+</body>
+</html>

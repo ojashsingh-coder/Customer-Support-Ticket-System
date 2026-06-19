@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Tickets</title>
+
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    background:white;
+    margin-top:20px;
+}
+
+th,td{
+    border:1px solid #ddd;
+    padding:10px;
+    text-align:center;
+    color:black;
+}
+
+th{
+    background:#4f46e5;
+    color:white;
+}
+
+</style>
+
+</head>
+<body>
+
+<header>
+    <h1>My Support Tickets</h1>
+</header>
+
+<div style="padding:20px">
+
+<table>
+
+<thead>
+<tr>
+<th>ID</th>
+<th>Category</th>
+<th>Priority</th>
+<th>Description</th>
+<th>Status</th>
+<th>Created At</th>
+</tr>
+</thead>
+
+<tbody id="ticketTable">
+</tbody>
+
+</table>
+
+</div>
+
+<script>
+
+async function loadMyTickets(){
+
+    const email = localStorage.getItem("email");
+
+    if(!email){
+        alert("Please Login First");
+        window.location.href = "login.html";
+        return;
+    }
+
+    const response =
+    await fetch(`/my-tickets/${email}`);
+
+    const tickets =
+    await response.json();
+
+    let html = "";
+
+    tickets.forEach(ticket => {
+
+        html += `
+        <tr>
+            <td>${ticket.id}</td>
+            <td>${ticket.category}</td>
+            <td>${ticket.priority}</td>
+            <td>${ticket.description}</td>
+            <td>${ticket.status}</td>
+            <td>${ticket.created_at}</td>
+        </tr>
+        `;
+    });
+
+    document.getElementById("ticketTable").innerHTML = html;
+}
+
+loadMyTickets();
+
+</script>
+
+</body>
+</html>
+

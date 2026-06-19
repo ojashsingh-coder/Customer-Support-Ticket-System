@@ -1,0 +1,224 @@
+```html
+<!DOCTYPE html>
+<html>
+<head>
+<title>Live Support Chat</title>
+<link rel="stylesheet" href="style.css">
+
+<style>
+
+.chat-container{
+    width:800px;
+    margin:auto;
+    margin-top:30px;
+}
+
+.chat-header{
+    text-align:center;
+    margin-bottom:20px;
+}
+
+.chat-box{
+    height:500px;
+    overflow-y:auto;
+    border-radius:15px;
+    padding:15px;
+    background:#f8fafc;
+    border:1px solid #ccc;
+    box-shadow:0 0 15px rgba(0,0,0,0.1);
+}
+
+.message{
+    padding:12px 15px;
+    margin:10px;
+    border-radius:15px;
+    width:fit-content;
+    max-width:60%;
+    word-wrap:break-word;
+    font-size:16px;
+}
+
+.customer{
+    background:#3b82f6;
+    color:white;
+    margin-left:auto;
+}
+
+.agent{
+    background:#e5e7eb;
+    color:black;
+}
+
+.chat-input{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+.chat-input input{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    font-size:16px;
+}
+
+.chat-input button{
+    padding:12px 25px;
+    border:none;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+    background:#2563eb;
+    color:white;
+}
+
+.chat-input button:hover{
+    background:#1d4ed8;
+}
+
+.back-btn{
+    margin-bottom:20px;
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="chat-container">
+
+<div class="back-btn">
+<a href="dashboard.html">
+<button>← Back to Dashboard</button>
+</a>
+</div>
+
+<div class="chat-header">
+<h2>Live Support Chat</h2>
+</div>
+
+<div id="chatBox" class="chat-box"></div>
+
+<div class="chat-input">
+
+<input
+type="text"
+id="message"
+placeholder="Type your message..."
+>
+
+<button onclick="sendMessage()">
+Send
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+async function loadMessages(){
+
+    const response = await fetch("/messages");
+    const messages = await response.json();
+
+    let html = "";
+
+    messages.forEach(msg => {
+
+        html += `
+        <div class="message ${
+            msg.sender === "Customer"
+            ? "customer"
+            : "agent"
+        }">
+            <b>${msg.sender}</b><br>
+            ${msg.message}
+        </div>
+        `;
+
+    });
+
+    document.getElementById("chatBox").innerHTML = html;
+
+    const chatBox =
+    document.getElementById("chatBox");
+
+    chatBox.scrollTop =
+    chatBox.scrollHeight;
+}
+
+async function sendMessage(){
+
+    const input =
+    document.getElementById("message");
+
+    const message =
+    input.value.trim();
+
+    if(message === ""){
+        return;
+    }
+
+    await fetch("/send-message",{
+
+        method:"POST",
+
+        headers:{
+            "Content-Type":"application/json"
+        },
+
+        body:JSON.stringify({
+            sender:"Customer",
+            message:message
+        })
+
+    });
+
+    input.value = "";
+
+    loadMessages();
+
+    setTimeout(async () => {
+
+        await fetch("/bot-reply",{
+
+            method:"POST",
+
+            headers:{
+                "Content-Type":"application/json"
+            },
+
+            body:JSON.stringify({
+                message:message
+            })
+
+        });
+
+        loadMessages();
+
+    },1000);
+
+}
+
+document
+.getElementById("message")
+.addEventListener("keypress",function(e){
+
+    if(e.key === "Enter"){
+        sendMessage();
+    }
+
+});
+
+loadMessages();
+
+setInterval(loadMessages,2000);
+
+</script>
+
+</body>
+</html>
+```
