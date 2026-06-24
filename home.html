@@ -1,0 +1,528 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Home · Ojash Desk</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.home-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 24px; }
+.home-stat-card { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); padding: 20px; display: flex; flex-direction: column; gap: 8px; transition: border-color var(--transition-fast); }
+.home-stat-card:hover { border-color: var(--border-strong); }
+.home-stat-label { font-size: 0.75rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; display: flex; align-items: center; gap: 6px; }
+.home-stat-value { font-size: 2rem; font-weight: 800; color: var(--text-primary); line-height: 1; }
+.home-stat-change { font-size: 0.75rem; font-weight: 500; display: flex; align-items: center; gap: 4px; }
+.home-stat-change.up { color: #10b981; }
+.home-stat-change.down { color: #ef4444; }
+.home-stat-change.neutral { color: var(--text-muted); }
+
+.home-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 24px; }
+.home-row-3 { display: grid; grid-template-columns: 2fr 1fr; gap: 16px; margin-bottom: 24px; }
+.home-panel { background: var(--bg-card); border: 1px solid var(--border-subtle); border-radius: var(--radius-lg); overflow: hidden; }
+.home-panel-header { padding: 16px 20px; border-bottom: 1px solid var(--border-subtle); display: flex; align-items: center; justify-content: space-between; }
+.home-panel-title { font-size: 0.875rem; font-weight: 700; color: var(--text-primary); }
+.home-panel-body { padding: 16px 20px; }
+.home-panel-link { font-size: 0.75rem; color: var(--brand-accent); font-weight: 500; cursor: pointer; }
+.home-panel-link:hover { text-decoration: underline; }
+
+/* Activity feed */
+.activity-item { display: flex; align-items: flex-start; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--border-subtle); }
+.activity-item:last-child { border-bottom: none; }
+.activity-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; margin-top: 5px; }
+.activity-dot.open { background: var(--status-open); }
+.activity-dot.resolved { background: var(--status-resolved); }
+.activity-dot.pending { background: var(--status-pending); }
+.activity-dot.closed { background: var(--status-closed); }
+.activity-text { font-size: 0.8rem; color: var(--text-secondary); line-height: 1.5; }
+.activity-text strong { color: var(--text-primary); font-weight: 600; }
+.activity-time { font-size: 0.7rem; color: var(--text-muted); white-space: nowrap; flex-shrink: 0; margin-left: auto; }
+
+/* Bar chart */
+.bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 100px; padding-top: 8px; }
+.bar-wrap { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.bar { width: 100%; border-radius: 4px 4px 0 0; transition: opacity var(--transition-fast); cursor: pointer; }
+.bar:hover { opacity: 0.8; }
+.bar-label { font-size: 0.65rem; color: var(--text-muted); }
+
+/* Agent leaderboard */
+.agent-row { display: flex; align-items: center; gap: 12px; padding: 9px 0; border-bottom: 1px solid var(--border-subtle); }
+.agent-row:last-child { border-bottom: none; }
+.agent-rank { font-size: 0.7rem; font-weight: 700; color: var(--text-muted); width: 16px; flex-shrink: 0; }
+.agent-av { width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; color: #fff; flex-shrink: 0; }
+.agent-details { flex: 1; min-width: 0; }
+.agent-dname { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
+.agent-dsub { font-size: 0.7rem; color: var(--text-muted); }
+.agent-resolved { font-size: 0.8rem; font-weight: 700; color: var(--text-primary); }
+
+/* Quick actions */
+.quick-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.quick-action-btn { background: var(--bg-elevated); border: 1px solid var(--border-subtle); border-radius: var(--radius-md); padding: 14px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; text-align: left; transition: all var(--transition-fast); }
+.quick-action-btn:hover { background: var(--bg-hover); border-color: var(--border-brand); }
+.quick-action-btn svg { color: var(--brand-accent); }
+.quick-action-label { font-size: 0.8rem; font-weight: 600; color: var(--text-primary); }
+.quick-action-desc { font-size: 0.7rem; color: var(--text-muted); }
+
+/* SLA warning */
+.sla-item { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border-subtle); }
+.sla-item:last-child { border-bottom: none; }
+.sla-bar-wrap { flex: 1; }
+.sla-bar-bg { height: 5px; background: var(--bg-elevated); border-radius: 99px; overflow: hidden; margin-top: 4px; }
+.sla-bar-fill { height: 100%; border-radius: 99px; }
+.sla-id { font-size: 0.7rem; color: var(--text-muted); }
+.sla-subject { font-size: 0.8rem; font-weight: 500; color: var(--text-primary); }
+.sla-time { font-size: 0.7rem; font-weight: 700; white-space: nowrap; flex-shrink: 0; }
+
+/* Welcome banner */
+.welcome-banner { background: linear-gradient(135deg, rgba(124,58,237,0.2) 0%, rgba(79,70,229,0.15) 100%); border: 1px solid rgba(124,58,237,0.3); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 24px; display: flex; align-items: center; justify-content: space-between; }
+.welcome-text h2 { font-size: 1.2rem; font-weight: 800; color: var(--text-primary); margin-bottom: 4px; }
+.welcome-text p { font-size: 0.85rem; color: var(--text-secondary); }
+.welcome-actions { display: flex; gap: 10px; flex-shrink: 0; }
+
+@media (max-width: 1100px) {
+  .home-grid { grid-template-columns: repeat(2, 1fr); }
+  .home-row, .home-row-3 { grid-template-columns: 1fr; }
+}
+@media (max-width: 600px) {
+  .home-grid { grid-template-columns: 1fr 1fr; }
+  .welcome-banner { flex-direction: column; gap: 14px; }
+  .welcome-actions { width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+      </div>
+      <div>
+        <div class="sidebar-logo-text">Ojash Desk</div>
+        <div class="sidebar-logo-sub">Support Workspace</div>
+      </div>
+    </div>
+
+    <button class="sidebar-new-btn" id="newTicketBtn" onclick="window.location.href='index.html'">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      New Ticket
+    </button>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Main</div>
+      <a class="nav-item active" href="home.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M9 21V12h6v9"/></svg>
+        Home
+      </a>
+      <a class="nav-item" href="index.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+        Inbox
+        <span class="nav-badge">14</span>
+      </a>
+      <a class="nav-item" href="tickets.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L11 23l-9-9 9.59-9.59A2 2 0 0113 4h7v7a2 2 0 01-.41 1.41z"/><circle cx="14.5" cy="9.5" r="1.5"/></svg>
+        Tickets
+      </a>
+      <a class="nav-item" href="customers.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Customers
+      </a>
+      <a class="nav-item" href="customer-portal.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+        Contacts
+      </a>
+      <a class="nav-item" href="live-chat.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        Live Chat
+      </a>
+      <a class="nav-item" href="knowledge-base.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Knowledge Base
+      </a>
+      <a class="nav-item" href="analytics.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analytics
+      </a>
+      <a class="nav-item" href="billing.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Billing
+      </a>
+      <a class="nav-item" href="settings.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33h0a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51h0a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v0a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Settings
+      </a>
+
+      <div class="sidebar-section-label">Views</div>
+      <a class="nav-item" href="tickets.html?view=mine">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg>
+        My Tickets
+        <span class="nav-badge gray">8</span>
+      </a>
+      <a class="nav-item" href="tickets.html?view=unassigned">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Unassigned
+        <span class="nav-badge gray">5</span>
+      </a>
+      <a class="nav-item" href="tickets.html?view=high-priority">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 22h20L12 2z"/><line x1="12" y1="10" x2="12" y2="15"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        High Priority
+        <span class="nav-badge gray">7</span>
+      </a>
+      <a class="nav-item" href="tickets.html?view=sla-breached">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        SLA Breached
+        <span class="nav-badge gray">2</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user dropdown" id="sidebarUserMenu">
+      <div class="sidebar-user-avatar av-purple" id="sbAvatar">OS</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" id="sbName">Ojash Singh</div>
+        <div class="sidebar-user-role" id="sbRole">Admin</div>
+      </div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      <div class="dropdown-menu" id="sidebarUserDropdown">
+        <a class="dropdown-item" href="settings.html">My Profile</a>
+        <a class="dropdown-item" href="settings.html">Settings</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item danger" href="login.html">Log Out</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+
+    <header class="topbar">
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar-title">Home</div>
+      <div class="search-bar topbar-search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="globalSearch" placeholder="Search tickets or customers...">
+        <span class="text-muted text-xs">⌘K</span>
+      </div>
+      <div class="topbar-right">
+        <div class="dropdown" id="notifMenu">
+          <button class="topbar-icon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <span class="topbar-notif-dot">3</span>
+          </button>
+          <div class="dropdown-menu" id="notifDropdown" style="min-width:280px">
+            <div class="dropdown-item">New ticket #TK-1025 assigned to you</div>
+            <div class="dropdown-item">SLA breach warning on #TK-1022</div>
+            <div class="dropdown-item">Sarah Mitchell replied to #TK-1023</div>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="index.html">View all notifications</a>
+          </div>
+        </div>
+        <div class="dropdown" id="topbarAvatarMenu">
+          <div class="topbar-avatar av-purple" id="tbAvatar">OS</div>
+          <div class="dropdown-menu" id="topbarAvatarDropdown">
+            <a class="dropdown-item" href="settings.html">My Profile</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item danger" href="login.html">Log Out</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="page active">
+      <div class="page-body">
+
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <h2 id="welcomeGreeting">Good morning, OjashSingh 👋</h2>
+            <p>Here's what's happening in your support workspace today.</p>
+          </div>
+          <div class="welcome-actions">
+            <a href="index.html" class="btn btn-secondary btn-sm">Open Inbox</a>
+            <a href="tickets.html" class="btn btn-primary btn-sm">+ New Ticket</a>
+          </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="home-grid">
+          <div class="home-stat-card">
+            <div class="home-stat-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+              Open Tickets
+            </div>
+            <div class="home-stat-value">24</div>
+            <div class="home-stat-change up">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+              +3 since yesterday
+            </div>
+          </div>
+          <div class="home-stat-card">
+            <div class="home-stat-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              Resolved Today
+            </div>
+            <div class="home-stat-value">11</div>
+            <div class="home-stat-change up">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"/></svg>
+              +2 vs yesterday
+            </div>
+          </div>
+          <div class="home-stat-card">
+            <div class="home-stat-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+              Avg Response Time
+            </div>
+            <div class="home-stat-value">1.4h</div>
+            <div class="home-stat-change down">
+              <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 9 12 15 6 9"/></svg>
+              +12min vs last week
+            </div>
+          </div>
+          <div class="home-stat-card">
+            <div class="home-stat-label">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 22h20L12 2z"/></svg>
+              SLA Breached
+            </div>
+            <div class="home-stat-value" style="color:#ef4444;">2</div>
+            <div class="home-stat-change neutral">Needs attention</div>
+          </div>
+        </div>
+
+        <!-- Middle Row: Activity + Chart -->
+        <div class="home-row-3">
+
+          <!-- Recent Activity -->
+          <div class="home-panel">
+            <div class="home-panel-header">
+              <div class="home-panel-title">Recent Activity</div>
+              <a class="home-panel-link" href="index.html">View Inbox →</a>
+            </div>
+            <div class="home-panel-body" style="padding:8px 20px;">
+              <div class="activity-item">
+                <div class="activity-dot open"></div>
+                <div class="activity-text"><strong>John Doe</strong> opened <strong>#TK-1024</strong> — Unable to login to account</div>
+                <div class="activity-time">2m ago</div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot resolved"></div>
+                <div class="activity-text"><strong>Ojash Singh</strong> resolved <strong>#TK-1019</strong> — API rate limit issue</div>
+                <div class="activity-time">18m ago</div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot pending"></div>
+                <div class="activity-text"><strong>Sarah Mitchell</strong> replied to <strong>#TK-1023</strong> — Payment failed</div>
+                <div class="activity-time">34m ago</div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot open"></div>
+                <div class="activity-text"><strong>Robert Williams</strong> opened <strong>#TK-1022</strong> — Refund not received</div>
+                <div class="activity-time">1h ago</div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot resolved"></div>
+                <div class="activity-text"><strong>Mark Klein</strong> closed <strong>#TK-1018</strong> — Can't export reports</div>
+                <div class="activity-time">1d ago</div>
+              </div>
+              <div class="activity-item">
+                <div class="activity-dot pending"></div>
+                <div class="activity-text"><strong>Ana Cortez</strong> reopened <strong>#TK-1017</strong> — Billing discrepancy</div>
+                <div class="activity-time">2d ago</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Ticket Volume Chart -->
+          <div class="home-panel">
+            <div class="home-panel-header">
+              <div class="home-panel-title">Tickets This Week</div>
+            </div>
+            <div class="home-panel-body">
+              <div class="bar-chart" id="weeklyChart">
+                <!-- rendered by JS -->
+              </div>
+              <div style="display:flex;gap:16px;margin-top:14px;flex-wrap:wrap;">
+                <div style="display:flex;align-items:center;gap:5px;font-size:0.7rem;color:var(--text-muted);">
+                  <div style="width:10px;height:10px;background:#7c3aed;border-radius:2px;"></div> New
+                </div>
+                <div style="display:flex;align-items:center;gap:5px;font-size:0.7rem;color:var(--text-muted);">
+                  <div style="width:10px;height:10px;background:#10b981;border-radius:2px;"></div> Resolved
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Row: Quick Actions + Agent Leaderboard + SLA Alerts -->
+        <div class="home-row">
+
+          <!-- Quick Actions -->
+          <div class="home-panel">
+            <div class="home-panel-header">
+              <div class="home-panel-title">Quick Actions</div>
+            </div>
+            <div class="home-panel-body">
+              <div class="quick-actions">
+                <button class="quick-action-btn" onclick="window.location.href='tickets.html'">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                  <div class="quick-action-label">New Ticket</div>
+                  <div class="quick-action-desc">Create a support request</div>
+                </button>
+                <button class="quick-action-btn" onclick="window.location.href='customers.html'">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                  <div class="quick-action-label">Add Customer</div>
+                  <div class="quick-action-desc">Register a new customer</div>
+                </button>
+                <button class="quick-action-btn" onclick="window.location.href='knowledge-base.html'">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                  <div class="quick-action-label">Write Article</div>
+                  <div class="quick-action-desc">Add to knowledge base</div>
+                </button>
+                <button class="quick-action-btn" onclick="window.location.href='analytics.html'">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+                  <div class="quick-action-label">View Analytics</div>
+                  <div class="quick-action-desc">Check team performance</div>
+                </button>
+                <button class="quick-action-btn" onclick="window.location.href='live-chat.html'">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                  <div class="quick-action-label">Live Chat</div>
+                  <div class="quick-action-desc">Start a chat session</div>
+                </button>
+                <button class="quick-action-btn" onclick="window.location.href='billing.html'">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+                  <div class="quick-action-label">Billing</div>
+                  <div class="quick-action-desc">Manage plans & invoices</div>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Agent Leaderboard + SLA Alerts stacked -->
+          <div style="display:flex;flex-direction:column;gap:16px;">
+
+            <!-- Agent Leaderboard -->
+            <div class="home-panel">
+              <div class="home-panel-header">
+                <div class="home-panel-title">🏆 Top Agents Today</div>
+                <a class="home-panel-link" href="analytics.html">Full report →</a>
+              </div>
+              <div class="home-panel-body" style="padding:8px 20px;">
+                <div class="agent-row">
+                  <div class="agent-rank">1</div>
+                  <div class="agent-av av-purple">OS</div>
+                  <div class="agent-details">
+                    <div class="agent-dname">Ojash Singh</div>
+                    <div class="agent-dsub">Admin · 98% CSAT</div>
+                  </div>
+                  <div class="agent-resolved">7</div>
+                </div>
+                <div class="agent-row">
+                  <div class="agent-rank">2</div>
+                  <div class="agent-av av-pink">PS</div>
+                  <div class="agent-details">
+                    <div class="agent-dname">Priya Sharma</div>
+                    <div class="agent-dsub">Agent · 95% CSAT</div>
+                  </div>
+                  <div class="agent-resolved">5</div>
+                </div>
+                <div class="agent-row">
+                  <div class="agent-rank">3</div>
+                  <div class="agent-av av-blue">RM</div>
+                  <div class="agent-details">
+                    <div class="agent-dname">Rohan Mehta</div>
+                    <div class="agent-dsub">Agent · 91% CSAT</div>
+                  </div>
+                  <div class="agent-resolved">3</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- SLA Alerts -->
+            <div class="home-panel">
+              <div class="home-panel-header">
+                <div class="home-panel-title" style="color:#ef4444;">⚠ SLA Alerts</div>
+                <a class="home-panel-link" href="tickets.html?view=sla-breached">View all →</a>
+              </div>
+              <div class="home-panel-body" style="padding:8px 20px;">
+                <div class="sla-item">
+                  <div class="sla-bar-wrap">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                      <div class="sla-id">#TK-1022</div>
+                      <span class="badge badge-high" style="font-size:0.65rem;">Breached</span>
+                    </div>
+                    <div class="sla-subject">Refund not received after 7 days</div>
+                    <div class="sla-bar-bg">
+                      <div class="sla-bar-fill" style="width:110%;background:#ef4444;"></div>
+                    </div>
+                  </div>
+                  <div class="sla-time" style="color:#ef4444;">+2h</div>
+                </div>
+                <div class="sla-item">
+                  <div class="sla-bar-wrap">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                      <div class="sla-id">#TK-1020</div>
+                      <span class="badge badge-medium" style="font-size:0.65rem;">Due soon</span>
+                    </div>
+                    <div class="sla-subject">How to update billing info</div>
+                    <div class="sla-bar-bg">
+                      <div class="sla-bar-fill" style="width:80%;background:#f59e0b;"></div>
+                    </div>
+                  </div>
+                  <div class="sla-time" style="color:#f59e0b;">45m</div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="data.js"></script>
+<script src="app.js"></script>
+<script>
+  // Greeting by time of day
+  const hour = new Date().getHours();
+  const greeting = hour < 12 ? 'Good morning' : hour < 17 ? 'Good afternoon' : 'Good evening';
+  const user = JSON.parse(localStorage.getItem('ojashdesk_current_user') || '{}');
+  const displayName = user.displayName || user.name || 'OjashSingh';
+  const greetEl = document.getElementById('welcomeGreeting');
+  if (greetEl) greetEl.textContent = greeting + ', ' + displayName + ' 👋';
+
+  // Weekly bar chart
+  const weekData = [
+    { day: 'Mon', new: 8,  resolved: 6 },
+    { day: 'Tue', new: 12, resolved: 9 },
+    { day: 'Wed', new: 7,  resolved: 11 },
+    { day: 'Thu', new: 15, resolved: 10 },
+    { day: 'Fri', new: 10, resolved: 8 },
+    { day: 'Sat', new: 4,  resolved: 5 },
+    { day: 'Sun', new: 3,  resolved: 4 },
+  ];
+  const maxVal = Math.max(...weekData.map(d => Math.max(d.new, d.resolved)));
+  const chartEl = document.getElementById('weeklyChart');
+  if (chartEl) {
+    chartEl.innerHTML = weekData.map(d => `
+      <div class="bar-wrap">
+        <div style="display:flex;gap:2px;align-items:flex-end;height:100px;">
+          <div class="bar" style="height:${Math.round((d.new/maxVal)*90)}px;background:#7c3aed;width:10px;" title="New: ${d.new}"></div>
+          <div class="bar" style="height:${Math.round((d.resolved/maxVal)*90)}px;background:#10b981;width:10px;" title="Resolved: ${d.resolved}"></div>
+        </div>
+        <div class="bar-label">${d.day}</div>
+      </div>
+    `).join('');
+  }
+</script>
+<script src="fixes.js"></script>
+</body>
+</html>

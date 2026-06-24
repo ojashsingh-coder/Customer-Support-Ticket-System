@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customer Portal · Ojash Desk</title>
+<link rel="stylesheet" href="style.css">
+<style>
+body.light-theme{--bg-base:#f4f4f8;--bg-surface:#fff;--bg-card:#fff;--bg-elevated:#f0f0f7;--bg-hover:#e8e8f5;--bg-active:#dcdcf0;--bg-sidebar:#fff;--text-primary:#18183a;--text-secondary:#4a4a70;--text-muted:#8888aa;--border-subtle:rgba(0,0,0,0.07);--border-default:rgba(0,0,0,0.12);--border-strong:rgba(0,0,0,0.2);--shadow-sm:0 1px 3px rgba(0,0,0,0.1);--shadow-md:0 4px 16px rgba(0,0,0,0.12);--shadow-lg:0 8px 32px rgba(0,0,0,0.15);}
+.portal-header{background:var(--bg-card);border-bottom:1px solid var(--border-subtle);padding:0 32px;height:62px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50;}
+.portal-logo{display:flex;align-items:center;gap:12px;}
+.portal-logo-icon{width:34px;height:34px;background:var(--brand-primary);border-radius:var(--radius-md);display:flex;align-items:center;justify-content:center;}
+.portal-logo-name{font-size:1rem;font-weight:700;color:var(--text-primary);}
+.portal-logo-sub{font-size:0.72rem;color:var(--text-muted);}
+.portal-body{max-width:900px;margin:0 auto;padding:32px 20px;}
+.portal-hero{text-align:center;padding:40px 20px 32px;background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(139,92,246,0.05));border-radius:var(--radius-xl);border:1px solid var(--border-subtle);margin-bottom:32px;}
+.portal-hero-title{font-size:1.6rem;font-weight:800;color:var(--text-primary);margin-bottom:8px;}
+.portal-hero-sub{font-size:0.95rem;color:var(--text-secondary);margin-bottom:20px;}
+.portal-search{max-width:480px;margin:0 auto;position:relative;}
+.portal-search input{width:100%;padding:12px 16px 12px 42px;background:var(--bg-elevated);border:1px solid var(--border-default);border-radius:var(--radius-lg);color:var(--text-primary);font-size:0.9rem;}
+.portal-search input:focus{border-color:var(--brand-primary);outline:none;}
+.portal-search svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;}
+.portal-tabs{display:flex;gap:0;border-bottom:1px solid var(--border-subtle);margin-bottom:24px;}
+.portal-tab{padding:10px 18px;font-size:0.875rem;font-weight:500;color:var(--text-muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all var(--transition-fast);}
+.portal-tab.active{color:var(--brand-accent);border-bottom-color:var(--brand-primary);}
+.portal-tab:hover{color:var(--text-primary);}
+.portal-section{display:none;}
+.portal-section.active{display:block;}
+.ticket-card{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:18px 20px;margin-bottom:12px;cursor:pointer;transition:all var(--transition-fast);}
+.ticket-card:hover{border-color:var(--border-brand);transform:translateY(-1px);box-shadow:var(--shadow-sm);}
+.ticket-card-header{display:flex;align-items:center;gap:10px;margin-bottom:8px;}
+.ticket-card-id{font-size:0.75rem;font-weight:600;color:var(--text-muted);font-family:'JetBrains Mono',monospace;}
+.ticket-card-subject{font-size:0.9rem;font-weight:600;color:var(--text-primary);flex:1;}
+.ticket-card-meta{display:flex;align-items:center;gap:14px;font-size:0.78rem;color:var(--text-muted);}
+/* Ticket detail view */
+.ticket-detail{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);overflow:hidden;}
+.ticket-detail-header{padding:20px 24px;border-bottom:1px solid var(--border-subtle);display:flex;align-items:flex-start;gap:12px;}
+.ticket-detail-back{background:none;border:none;color:var(--text-muted);cursor:pointer;padding:4px;display:flex;align-items:center;gap:6px;font-size:0.8rem;margin-bottom:12px;transition:color var(--transition-fast);}
+.ticket-detail-back:hover{color:var(--text-primary);}
+.message-bubble{display:flex;gap:12px;margin-bottom:18px;}
+.message-bubble.agent .bubble-body{background:rgba(124,58,237,0.12);border:1px solid rgba(124,58,237,0.2);}
+.bubble-avatar{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;color:#fff;flex-shrink:0;}
+.bubble-content{flex:1;}
+.bubble-name{font-size:0.78rem;font-weight:600;color:var(--text-secondary);margin-bottom:4px;}
+.bubble-body{background:var(--bg-elevated);border-radius:var(--radius-lg);padding:12px 16px;font-size:0.875rem;color:var(--text-primary);line-height:1.6;}
+.bubble-time{font-size:0.72rem;color:var(--text-muted);margin-top:4px;}
+/* New ticket form */
+.new-ticket-form{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:28px;}
+.csat-widget{background:var(--bg-card);border:1px solid var(--border-subtle);border-radius:var(--radius-lg);padding:24px;text-align:center;margin-bottom:12px;}
+
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<div class="portal-header">
+  <div class="portal-logo">
+    <div class="portal-logo-icon">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+    </div>
+    <div>
+      <div class="portal-logo-name">Ojash Desk</div>
+      <div class="portal-logo-sub">Customer Portal</div>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:16px;">
+    <a href="login.html" class="btn btn-secondary btn-sm">Agent Login</a>
+    <button class="btn btn-primary btn-sm" onclick="showPortalSection('new-ticket')">+ New Ticket</button>
+  </div>
+</div>
+
+<!-- Body -->
+<div class="portal-body">
+
+  <!-- Hero -->
+  <div class="portal-hero">
+    <div style="font-size:2.5rem;margin-bottom:12px;">🎧</div>
+    <div class="portal-hero-title">How can we help you?</div>
+    <div class="portal-hero-sub">Search our knowledge base or submit a support ticket. We typically reply within 4 hours.</div>
+    <div class="portal-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="portalSearchInput" placeholder="Search for answers..." oninput="filterPortalTickets(this.value)">
+    </div>
+  </div>
+
+  <!-- Quick Action Cards -->
+  <div class="grid-3" style="margin-bottom:28px;">
+    <div class="stats-card" style="cursor:pointer;text-align:center;" onclick="showPortalSection('new-ticket')">
+      <div style="font-size:1.8rem;margin-bottom:8px;">📝</div>
+      <div style="font-weight:600;margin-bottom:4px;">Submit a Ticket</div>
+      <div style="font-size:0.8rem;color:var(--text-muted);">Report an issue or request support</div>
+    </div>
+    <div class="stats-card" style="cursor:pointer;text-align:center;" onclick="window.location.href='knowledge-base.html'">
+      <div style="font-size:1.8rem;margin-bottom:8px;">📚</div>
+      <div style="font-weight:600;margin-bottom:4px;">Knowledge Base</div>
+      <div style="font-size:0.8rem;color:var(--text-muted);">Browse FAQs and articles</div>
+    </div>
+    <div class="stats-card" style="cursor:pointer;text-align:center;" onclick="window.location.href='live-chat.html'">
+      <div style="font-size:1.8rem;margin-bottom:8px;">💬</div>
+      <div style="font-weight:600;margin-bottom:4px;">Live Chat</div>
+      <div style="font-size:0.8rem;color:var(--text-muted);">Chat with an agent right now</div>
+    </div>
+  </div>
+
+  <!-- Tabs -->
+  <div class="portal-tabs">
+    <div class="portal-tab active" data-psec="my-tickets" onclick="switchPortalTab(this)">My Tickets</div>
+    <div class="portal-tab" data-psec="new-ticket" onclick="switchPortalTab(this)">New Ticket</div>
+    <div class="portal-tab" data-psec="csat" onclick="switchPortalTab(this)">Rate Support</div>
+  </div>
+
+  <!-- MY TICKETS -->
+  <div class="portal-section active" id="psec-my-tickets">
+    <div id="ticketListView">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+        <div style="font-size:0.875rem;color:var(--text-muted);" id="portalTicketCount">Showing 4 tickets</div>
+        <select class="form-select" style="width:150px;" onchange="filterPortalByStatus(this.value)">
+          <option value="">All Status</option>
+          <option value="open">Open</option>
+          <option value="pending">Pending</option>
+          <option value="resolved">Resolved</option>
+          <option value="closed">Closed</option>
+        </select>
+      </div>
+      <div id="portalTicketList"></div>
+    </div>
+
+    <!-- Ticket Detail (hidden by default) -->
+    <div id="ticketDetailView" style="display:none;">
+      <button class="ticket-detail-back" onclick="closeTicketDetail()">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to tickets
+      </button>
+      <div class="ticket-detail">
+        <div class="ticket-detail-header">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:10px;margin-bottom:6px;">
+              <span id="dtId" class="ticket-card-id">#TK-1024</span>
+              <span id="dtStatus" class="badge badge-open">Open</span>
+              <span id="dtPriority" class="badge badge-high">High</span>
+            </div>
+            <div id="dtSubject" style="font-size:1.05rem;font-weight:700;color:var(--text-primary);">Unable to login to account</div>
+          </div>
+        </div>
+        <div style="padding:20px 24px;">
+          <div class="portal-tabs" style="margin-bottom:18px;">
+            <div class="portal-tab active" onclick="this.parentElement.querySelectorAll('.portal-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active');document.getElementById('dtConv').style.display='block';document.getElementById('dtActivity').style.display='none';">Conversation</div>
+            <div class="portal-tab" onclick="this.parentElement.querySelectorAll('.portal-tab').forEach(t=>t.classList.remove('active'));this.classList.add('active');document.getElementById('dtConv').style.display='none';document.getElementById('dtActivity').style.display='block';">Activity</div>
+          </div>
+          <div id="dtConv">
+            <div id="dtMessages"></div>
+            <!-- Reply -->
+            <div style="margin-top:16px;border-top:1px solid var(--border-subtle);padding-top:16px;">
+              <textarea class="form-textarea" id="dtReplyInput" rows="3" placeholder="Type your reply..."></textarea>
+              <div style="display:flex;justify-content:flex-end;margin-top:8px;">
+                <button class="btn btn-primary btn-sm" onclick="sendPortalReply()">Send Reply</button>
+              </div>
+            </div>
+          </div>
+          <div id="dtActivity" style="display:none;">
+            <div style="font-size:0.8rem;color:var(--text-muted);margin-bottom:12px;">Ticket activity log</div>
+            <div class="agent-item" style="padding:8px 0;border-bottom:1px solid var(--border-subtle);">
+              <div style="width:8px;height:8px;border-radius:50%;background:var(--brand-primary);flex-shrink:0;"></div>
+              <div style="flex:1;font-size:0.8rem;color:var(--text-secondary);">Ticket created by you</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);">2 min ago</div>
+            </div>
+            <div class="agent-item" style="padding:8px 0;border-bottom:1px solid var(--border-subtle);">
+              <div style="width:8px;height:8px;border-radius:50%;background:#3b82f6;flex-shrink:0;"></div>
+              <div style="flex:1;font-size:0.8rem;color:var(--text-secondary);">Assigned to Ojash Singh</div>
+              <div style="font-size:0.75rem;color:var(--text-muted);">1 min ago</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW TICKET -->
+  <div class="portal-section" id="psec-new-ticket">
+    <div class="new-ticket-form">
+      <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:4px;">Submit a Support Ticket</div>
+      <div style="font-size:0.875rem;color:var(--text-muted);margin-bottom:20px;">Fill in the form below and our team will get back to you shortly.</div>
+
+      <!-- AI Suggestion banner -->
+      <div id="aiSuggestionBanner" style="display:none;background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.2);border-radius:var(--radius-md);padding:12px 16px;margin-bottom:16px;font-size:0.82rem;color:var(--text-secondary);">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;font-weight:600;color:var(--brand-accent);">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l3 7h7l-5.5 4 2 7L12 16l-6.5 4 2-7L2 9h7z"/></svg>
+          AI Suggestion
+        </div>
+        <div id="aiSuggestionText">We found a related article that may help...</div>
+        <a id="aiSuggestionLink" href="knowledge-base.html" style="color:var(--brand-accent);font-weight:500;margin-top:4px;display:inline-block;">View Article →</a>
+      </div>
+
+      <form id="portalNewTicketForm" onsubmit="submitPortalTicket(event)">
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Your Name</label>
+            <input class="form-input" type="text" id="ptName" placeholder="John Doe" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input class="form-input" type="email" id="ptEmail" placeholder="john@company.com" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subject</label>
+          <input class="form-input" type="text" id="ptSubject" placeholder="Brief summary of your issue" required oninput="triggerAISuggestion(this.value)">
+        </div>
+        <div class="grid-2">
+          <div class="form-group">
+            <label class="form-label">Category</label>
+            <select class="form-select" id="ptCategory">
+              <option>Technical Issue</option>
+              <option>Billing</option>
+              <option>Account</option>
+              <option>Feature Request</option>
+              <option>General Inquiry</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Priority</label>
+            <select class="form-select" id="ptPriority">
+              <option>Low</option>
+              <option selected>Medium</option>
+              <option>High</option>
+              <option>Urgent</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description</label>
+          <textarea class="form-textarea" id="ptDescription" rows="5" placeholder="Describe your issue in detail. Include any error messages, steps to reproduce, and screenshots if applicable." required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Attachments (optional)</label>
+          <div style="border:2px dashed var(--border-default);border-radius:var(--radius-md);padding:20px;text-align:center;color:var(--text-muted);cursor:pointer;font-size:0.875rem;" onclick="document.getElementById('ptFile').click()">
+            📎 Click to attach files (max 10MB each)
+            <input type="file" id="ptFile" multiple style="display:none" onchange="if(this.files.length){const names=Array.from(this.files).map(f=>f.name).join(', ');showToast(this.files.length+' file(s) attached: '+names,'success');}">
+          </div>
+        </div>
+        <div style="display:flex;gap:10px;justify-content:flex-end;">
+          <button type="button" class="btn btn-secondary" onclick="showPortalSection('my-tickets')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Submit Ticket</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- CSAT -->
+  <div class="portal-section" id="psec-csat">
+    <div class="csat-widget" id="csatWidget">
+      <div style="font-size:1rem;font-weight:700;color:var(--text-primary);margin-bottom:6px;">Rate Your Recent Support Experience</div>
+      <div style="font-size:0.875rem;color:var(--text-muted);margin-bottom:20px;">Your feedback helps us improve.</div>
+      <div class="csat-stars" style="justify-content:center;margin-bottom:20px;" id="csatStars">
+        <span class="csat-star" data-val="1" onclick="rateCsat(1)">★</span>
+        <span class="csat-star" data-val="2" onclick="rateCsat(2)">★</span>
+        <span class="csat-star" data-val="3" onclick="rateCsat(3)">★</span>
+        <span class="csat-star" data-val="4" onclick="rateCsat(4)">★</span>
+        <span class="csat-star" data-val="5" onclick="rateCsat(5)">★</span>
+      </div>
+      <div id="csatRatingLabel" style="font-size:0.875rem;color:var(--text-muted);margin-bottom:16px;">Select a rating above</div>
+      <textarea class="form-textarea" id="csatComment" rows="3" placeholder="Tell us what we did well or how we can improve..."></textarea>
+      <div style="margin-top:12px;">
+        <button class="btn btn-primary" onclick="submitCsat()">Submit Feedback</button>
+      </div>
+    </div>
+
+    <div class="settings-card" style="margin-top:12px;">
+      <div class="settings-card-title">Your Recent Resolutions</div>
+      <div id="csatTicketList"></div>
+    </div>
+  </div>
+
+</div><!-- /portal-body -->
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- Footer -->
+<div style="text-align:center;padding:24px;font-size:0.75rem;color:var(--text-muted);border-top:1px solid var(--border-subtle);margin-top:40px;">
+  © 2026 Ojash Desk · Owned by Ojash Singh · Created by OjashSingh
+  <span style="margin:0 8px;">·</span>
+  <a href="login.html" style="color:var(--brand-accent);">Agent Login</a>
+</div>
+
+<script src="data.js"></script>
+<script>
+// Theme
+const savedTheme = localStorage.getItem('ojashdesk_theme') || 'dark';
+if (savedTheme === 'light') { document.body.classList.add('light-theme'); }
+
+// Portal tickets sample data
+const portalTickets = [
+  { id: '#TK-1024', subject: 'Unable to login to account', status: 'open', priority: 'high', updated: '2 min ago', messages: [
+    { from: 'customer', name: 'You', text: "I'm unable to login to my account. I tried resetting my password but didn't receive any email.", time: '2 min ago' },
+    { from: 'agent', name: 'Ojash Singh (Agent)', text: "Hi! I'm sorry you're facing this. Could you confirm the email address associated with your account?", time: '1 min ago' }
+  ]},
+  { id: '#TK-1021', subject: 'Feature request: Dark mode for mobile app', status: 'pending', priority: 'low', updated: '3h ago', messages: [
+    { from: 'customer', name: 'You', text: "Please add a dark mode option to the mobile app. It's hard to use at night.", time: '3h ago' }
+  ]},
+  { id: '#TK-1018', subject: "Can't export reports to PDF", status: 'resolved', priority: 'medium', updated: '1d ago', messages: [
+    { from: 'customer', name: 'You', text: "The PDF export button does nothing when I click it.", time: '2d ago' },
+    { from: 'agent', name: 'Priya Sharma (Agent)', text: "We've deployed a fix. Please clear your browser cache and try again. Let us know if the issue persists!", time: '1d ago' }
+  ]},
+  { id: '#TK-1010', subject: 'Billing discrepancy on March invoice', status: 'closed', priority: 'high', updated: '5d ago', messages: [
+    { from: 'customer', name: 'You', text: "I was charged twice for my March subscription.", time: '6d ago' },
+    { from: 'agent', name: 'Ojash Singh (Agent)', text: "I've verified the duplicate charge and issued a full refund. You should see it in 5-7 business days.", time: '5d ago' }
+  ]}
+];
+
+function renderPortalTickets(list) {
+  const el = document.getElementById('portalTicketList');
+  document.getElementById('portalTicketCount').textContent = `Showing ${list.length} ticket${list.length !== 1 ? 's' : ''}`;
+  if (!list.length) { el.innerHTML = '<div class="empty-state"><div class="empty-state-icon">🎉</div><div class="empty-state-title">No tickets found</div><div class="empty-state-desc">Looks like you haven\'t submitted any support tickets yet.</div></div>'; return; }
+  el.innerHTML = list.map(t => `
+    <div class="ticket-card" onclick="openTicketDetail('${t.id}')">
+      <div class="ticket-card-header">
+        <span class="ticket-card-id">${t.id}</span>
+        <span class="badge badge-${t.status}">${t.status.charAt(0).toUpperCase()+t.status.slice(1)}</span>
+        <span class="badge badge-${t.priority}">${t.priority.charAt(0).toUpperCase()+t.priority.slice(1)}</span>
+        <span class="ticket-card-subject">${t.subject}</span>
+      </div>
+      <div class="ticket-card-meta">
+        <span>Updated ${t.updated}</span>
+        <span>${t.messages.length} message${t.messages.length !== 1 ? 's' : ''}</span>
+      </div>
+    </div>`).join('');
+}
+
+renderPortalTickets(portalTickets);
+
+function filterPortalTickets(q) {
+  const filtered = portalTickets.filter(t => t.subject.toLowerCase().includes(q.toLowerCase()) || t.id.includes(q));
+  renderPortalTickets(filtered);
+}
+
+function filterPortalByStatus(s) {
+  const filtered = s ? portalTickets.filter(t => t.status === s) : portalTickets;
+  renderPortalTickets(filtered);
+}
+
+function openTicketDetail(id) {
+  const t = portalTickets.find(x => x.id === id);
+  if (!t) return;
+  document.getElementById('dtId').textContent = t.id;
+  document.getElementById('dtStatus').textContent = t.status.charAt(0).toUpperCase()+t.status.slice(1);
+  document.getElementById('dtStatus').className = 'badge badge-' + t.status;
+  document.getElementById('dtPriority').textContent = t.priority.charAt(0).toUpperCase()+t.priority.slice(1);
+  document.getElementById('dtPriority').className = 'badge badge-' + t.priority;
+  document.getElementById('dtSubject').textContent = t.subject;
+
+  const colors = { customer: 'av-blue', agent: 'av-purple' };
+  document.getElementById('dtMessages').innerHTML = t.messages.map(m => `
+    <div class="message-bubble ${m.from === 'agent' ? 'agent' : ''}">
+      <div class="bubble-avatar ${colors[m.from] || 'av-blue'}">${m.name.charAt(0)}</div>
+      <div class="bubble-content">
+        <div class="bubble-name">${m.name}</div>
+        <div class="bubble-body">${m.text}</div>
+        <div class="bubble-time">${m.time}</div>
+      </div>
+    </div>`).join('');
+
+  document.getElementById('ticketListView').style.display = 'none';
+  document.getElementById('ticketDetailView').style.display = 'block';
+}
+
+function closeTicketDetail() {
+  document.getElementById('ticketListView').style.display = 'block';
+  document.getElementById('ticketDetailView').style.display = 'none';
+}
+
+function sendPortalReply() {
+  const val = document.getElementById('dtReplyInput').value.trim();
+  if (!val) return;
+  const msgs = document.getElementById('dtMessages');
+  msgs.innerHTML += `<div class="message-bubble"><div class="bubble-avatar av-blue">Y</div><div class="bubble-content"><div class="bubble-name">You</div><div class="bubble-body">${val}</div><div class="bubble-time">Just now</div></div></div>`;
+  document.getElementById('dtReplyInput').value = '';
+  showToast('Reply sent!', 'success');
+  msgs.scrollTop = msgs.scrollHeight;
+}
+
+// Portal section switching
+function showPortalSection(sec) {
+  document.querySelectorAll('.portal-tab').forEach(t => { if (t.dataset.psec === sec) t.classList.add('active'); else t.classList.remove('active'); });
+  document.querySelectorAll('.portal-section').forEach(s => { s.classList.toggle('active', s.id === 'psec-' + sec); });
+}
+function switchPortalTab(el) {
+  const sec = el.dataset.psec;
+  showPortalSection(sec);
+}
+
+// AI suggestion
+let aiTimer;
+const suggestions = {
+  'login': { text: 'Trouble logging in? See our "Reset Password" guide.', link: '#' },
+  'password': { text: 'Password issues? Check our account recovery article.', link: '#' },
+  'billing': { text: 'Billing question? Browse our billing FAQ.', link: '#' },
+  'refund': { text: 'Requesting a refund? See our refund policy article.', link: '#' },
+  'export': { text: 'Export issues? Check our data export troubleshooting guide.', link: '#' },
+  'install': { text: 'Installation help? See our getting started guide.', link: '#' }
+};
+function triggerAISuggestion(val) {
+  clearTimeout(aiTimer);
+  aiTimer = setTimeout(() => {
+    const lower = val.toLowerCase();
+    const key = Object.keys(suggestions).find(k => lower.includes(k));
+    const banner = document.getElementById('aiSuggestionBanner');
+    if (key && val.length > 5) {
+      document.getElementById('aiSuggestionText').textContent = suggestions[key].text;
+      document.getElementById('aiSuggestionLink').href = suggestions[key].link;
+      banner.style.display = 'block';
+    } else { banner.style.display = 'none'; }
+  }, 600);
+}
+
+// Submit ticket
+function submitPortalTicket(e) {
+  e.preventDefault();
+  const name = document.getElementById('ptName').value;
+  const email = document.getElementById('ptEmail').value;
+  const subject = document.getElementById('ptSubject').value;
+  const newId = '#TK-' + (1000 + portalTickets.length + 1);
+  portalTickets.unshift({ id: newId, subject, status: 'open', priority: document.getElementById('ptPriority').value.toLowerCase(), updated: 'Just now', messages: [{ from: 'customer', name: name || 'You', text: document.getElementById('ptDescription').value, time: 'Just now' }] });
+  renderPortalTickets(portalTickets);
+  showToast('Ticket ' + newId + ' submitted! We\'ll reply within 4 hours.', 'success');
+  document.getElementById('portalNewTicketForm').reset();
+  document.getElementById('aiSuggestionBanner').style.display = 'none';
+  showPortalSection('my-tickets');
+}
+
+// CSAT
+let csatValue = 0;
+const csatLabels = ['', 'Very Dissatisfied 😞', 'Dissatisfied 😕', 'Neutral 😐', 'Satisfied 😊', 'Very Satisfied 😄'];
+function rateCsat(val) {
+  csatValue = val;
+  document.querySelectorAll('.csat-star').forEach(s => s.classList.toggle('active', +s.dataset.val <= val));
+  document.getElementById('csatRatingLabel').textContent = csatLabels[val];
+}
+function submitCsat() {
+  if (!csatValue) { showToast('Please select a rating first', 'warning'); return; }
+  showToast('Thank you for your feedback! 🙏', 'success');
+  document.getElementById('csatWidget').innerHTML = '<div style="padding:20px;text-align:center;"><div style="font-size:2rem;margin-bottom:12px;">🙏</div><div style="font-size:1rem;font-weight:700;color:var(--text-primary);">Thank you for your feedback!</div><div style="font-size:0.875rem;color:var(--text-muted);margin-top:6px;">Your response helps us improve our support quality.</div></div>';
+}
+
+// Populate CSAT resolved tickets
+const resolved = portalTickets.filter(t => t.status === 'resolved' || t.status === 'closed');
+document.getElementById('csatTicketList').innerHTML = resolved.length ? resolved.map(t => `
+  <div class="agent-item" style="cursor:pointer;" onclick="showPortalSection('csat')">
+    <div style="flex:1;"><div style="font-size:0.875rem;font-weight:500;color:var(--text-primary);">${t.subject}</div><div style="font-size:0.75rem;color:var(--text-muted);">${t.id} · ${t.updated}</div></div>
+    <span class="badge badge-resolved">${t.status.charAt(0).toUpperCase()+t.status.slice(1)}</span>
+  </div>`).join('') : '<div style="text-align:center;padding:20px;color:var(--text-muted);font-size:0.875rem;">No resolved tickets yet</div>';
+
+// Toast
+function showToast(msg, type) {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = 'toast ' + (type || 'info');
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => { t.style.animation = 'slideOut .3s ease'; setTimeout(() => t.remove(), 300); }, 2800);
+}
+
+// Pre-fill from logged-in user if available
+const cu = JSON.parse(localStorage.getItem('ojashdesk_current_user') || 'null');
+if (cu) {
+  document.getElementById('ptName') && (document.getElementById('ptName').value = cu.name || '');
+  document.getElementById('ptEmail') && (document.getElementById('ptEmail').value = cu.email || '');
+}
+</script>
+<script src="fixes.js"></script>
+</body>
+</html>
