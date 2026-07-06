@@ -1,0 +1,937 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Inbox · Ojash Desk</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script>(function(){try{var t=localStorage.getItem('ojashdesk_theme')||'dark';var r=t;if(t==='system'){r=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}var c=r==='light'?'light-theme':'dark-theme';document.documentElement.classList.add(c);document.body.classList.add(c);}catch(e){}})();</script>
+
+
+<!-- Mobile sidebar overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <!-- ============== SIDEBAR ============== -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+      </div>
+      <div>
+        <div class="sidebar-logo-text">Ojash Desk</div>
+        <div class="sidebar-logo-sub">Support Workspace</div>
+      </div>
+    </div>
+
+    <button class="sidebar-new-btn" id="newTicketBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      New Ticket
+      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-left:auto"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"/></svg>
+    </button>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Main</div>
+
+      <a class="nav-item" href="home.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M9 21V12h6v9"/></svg>
+        Home
+      </a>
+      <a class="nav-item active" href="index.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+        Inbox
+        <span class="nav-badge">14</span>
+      </a>
+      <a class="nav-item" href="tickets.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L11 23l-9-9 9.59-9.59A2 2 0 0113 4h7v7a2 2 0 01-.41 1.41z"/><circle cx="14.5" cy="9.5" r="1.5"/></svg>
+        Tickets
+      </a>
+      <a class="nav-item" href="customers.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Customers
+      </a>
+      <a class="nav-item" href="customer-portal.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+        Contacts
+      </a>
+      <a class="nav-item" href="live-chat.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        Live Chat
+      </a>
+      <a class="nav-item" href="knowledge-base.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Knowledge Base
+      </a>
+      <a class="nav-item" href="analytics.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analytics
+      </a>
+      <a class="nav-item" href="billing.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Billing
+      </a>
+      <a class="nav-item" href="settings.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33h0a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51h0a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v0a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Settings
+      </a>
+
+      <div class="sidebar-section-label">Views</div>
+      <a class="nav-item" href="tickets.html?view=mine">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg>
+        My Tickets
+        <span class="nav-badge gray">8</span>
+      </a>
+      <a class="nav-item" href="tickets.html?view=unassigned">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Unassigned
+        <span class="nav-badge gray">5</span>
+      </a>
+      <a class="nav-item" href="tickets.html?view=mentions">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M16 8v5a3 3 0 006 0v-1a10 10 0 10-3.92 7.94"/></svg>
+        Mentions
+        <span class="nav-badge gray">3</span>
+      </a>
+      <a class="nav-item" href="tickets.html?view=high-priority">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 22h20L12 2z"/><line x1="12" y1="10" x2="12" y2="15"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        High Priority
+        <span class="nav-badge gray">7</span>
+      </a>
+      <a class="nav-item" href="tickets.html?view=sla-breached">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        SLA Breached
+        <span class="nav-badge gray">2</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-ai" id="sidebarAiBox">
+      <div class="sidebar-ai-header">
+        <div class="sidebar-ai-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"/></svg>
+          AI Copilot <span class="badge badge-beta">Beta</span>
+        </div>
+        <button class="sidebar-ai-close" id="closeAiBox">✕</button>
+      </div>
+      <p>Your AI assistant for faster resolutions.</p>
+      <button class="sidebar-ai-btn">Ask AI anything →</button>
+    </div>
+
+    <div class="sidebar-user dropdown" id="sidebarUserMenu">
+      <div class="sidebar-user-avatar av-purple" id="sbAvatar">OS</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" id="sbName">Ojash Singh</div>
+        <div class="sidebar-user-role" id="sbRole">Admin</div>
+      </div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      <div class="dropdown-menu" id="sidebarUserDropdown">
+        <a class="dropdown-item" href="settings.html">My Profile</a>
+        <a class="dropdown-item" href="settings.html">Settings</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item danger" href="login.html">Log Out</a>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============== MAIN CONTENT ============== -->
+  <div class="main-content">
+
+    <!-- Topbar -->
+    <header class="topbar">
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+
+      <div class="topbar-title dropdown" id="topbarTitleMenu">
+        Inbox
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        <div class="dropdown-menu" id="topbarTitleDropdown">
+          <a class="dropdown-item" href="index.html">Inbox</a>
+          <a class="dropdown-item" href="tickets.html">All Tickets</a>
+          <a class="dropdown-item" href="live-chat.html">Live Chat</a>
+        </div>
+      </div>
+
+      <div class="search-bar topbar-search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="globalSearch" placeholder="Search tickets or customers...">
+        <span class="text-muted text-xs">⌘K</span>
+      </div>
+
+      <div class="topbar-right">
+        <button class="btn btn-secondary btn-sm" id="whatsNewBtn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="22" x2="12" y2="7"/><path d="M12 7H7.5a2.5 2.5 0 010-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 000-5C13 2 12 7 12 7z"/></svg>
+          What's new
+        </button>
+
+        <div class="dropdown" id="notifMenu">
+          <button class="topbar-icon-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 10-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <span class="topbar-notif-dot">3</span>
+          </button>
+          <div class="dropdown-menu" id="notifDropdown" style="min-width:280px">
+            <div class="dropdown-item">New ticket #TK-1025 assigned to you</div>
+            <div class="dropdown-item">SLA breach warning on #TK-1022</div>
+            <div class="dropdown-item">Sneha Mehta replied to #TK-1023</div>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" href="index.html">View all notifications</a>
+          </div>
+        </div>
+
+        <div class="dropdown" id="topbarAvatarMenu">
+          <div class="topbar-avatar av-purple" id="tbAvatar">OS</div>
+          <div class="dropdown-menu" id="topbarAvatarDropdown">
+            <a class="dropdown-item" href="settings.html">My Profile</a>
+            <a class="dropdown-item" href="settings.html">Account Settings</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item danger" href="login.html">Log Out</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Inbox Page -->
+    <div class="page active" id="page-inbox">
+      <div class="inbox-layout">
+
+        <!-- Ticket List -->
+        <div class="ticket-list-panel">
+          <div class="ticket-list-header">
+            <div class="ticket-filter-tabs">
+              <button class="filter-tab active" data-filter="all">All <span class="count">14</span></button>
+              <button class="filter-tab" data-filter="open">Open <span class="count">6</span></button>
+              <button class="filter-tab" data-filter="pending">Pending <span class="count">4</span></button>
+              <button class="filter-tab" data-filter="resolved">Resolved <span class="count">4</span></button>
+              <button class="filter-icon-btn" title="Filter">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <div class="ticket-list" id="ticketList">
+
+            <div class="ticket-item active" data-ticket="TK-1024">
+              <div class="ticket-item-header">
+                <div class="ticket-avatar av-blue">AJ</div>
+                <div style="flex:1;min-width:0">
+                  <div class="ticket-item-id">#TK-1024</div>
+                </div>
+                <span class="badge badge-high">High</span>
+              </div>
+              <div class="ticket-item-title">Unable to login to account</div>
+              <div class="ticket-item-meta">
+                <span class="ticket-item-author">Aarav Joshi · 2m ago</span>
+                <span class="ticket-item-comments">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                  3
+                </span>
+              </div>
+            </div>
+
+            <div class="ticket-item" data-ticket="TK-1023">
+              <div class="ticket-item-header">
+                <div class="ticket-avatar av-pink">SM</div>
+                <div style="flex:1;min-width:0">
+                  <div class="ticket-item-id">#TK-1023</div>
+                </div>
+                <span class="badge badge-medium">Medium</span>
+              </div>
+              <div class="ticket-item-title">Payment failed but amount deducted</div>
+              <div class="ticket-item-meta">
+                <span class="ticket-item-author">Sneha Mehta · 15m ago</span>
+                <span class="ticket-item-comments">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                  2
+                </span>
+              </div>
+            </div>
+
+            <div class="ticket-item" data-ticket="TK-1022">
+              <div class="ticket-item-header">
+                <div class="ticket-avatar av-red">RV</div>
+                <div style="flex:1;min-width:0">
+                  <div class="ticket-item-id">#TK-1022</div>
+                </div>
+                <span class="badge badge-pending">Pending</span>
+              </div>
+              <div class="ticket-item-title">Refund not received after 7 days</div>
+              <div class="ticket-item-meta">
+                <span class="ticket-item-author">Rohan Verma · 1h ago</span>
+                <span class="ticket-item-comments">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                  1
+                </span>
+              </div>
+            </div>
+
+            <div class="ticket-item" data-ticket="TK-1021">
+              <div class="ticket-item-header">
+                <div class="ticket-avatar av-teal">OL</div>
+                <div style="flex:1;min-width:0">
+                  <div class="ticket-item-id">#TK-1021</div>
+                </div>
+                <span class="badge badge-low">Low</span>
+              </div>
+              <div class="ticket-item-title">Feature request: Dark mode</div>
+              <div class="ticket-item-meta">
+                <span class="ticket-item-author">Om Lakhani · 3h ago</span>
+                <span class="ticket-item-comments">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                  2
+                </span>
+              </div>
+            </div>
+
+            <div class="ticket-item" data-ticket="TK-1020">
+              <div class="ticket-item-header">
+                <div class="ticket-avatar av-orange">DB</div>
+                <div style="flex:1;min-width:0">
+                  <div class="ticket-item-id">#TK-1020</div>
+                </div>
+                <span class="badge badge-medium">Medium</span>
+              </div>
+              <div class="ticket-item-title">How to update billing information?</div>
+              <div class="ticket-item-meta">
+                <span class="ticket-item-author">Dev Bhatia · 5h ago</span>
+                <span class="ticket-item-comments">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                  3
+                </span>
+              </div>
+            </div>
+
+            <div class="ticket-item" data-ticket="TK-1019">
+              <div class="ticket-item-header">
+                <div class="ticket-avatar av-green">AC</div>
+                <div style="flex:1;min-width:0">
+                  <div class="ticket-item-id">#TK-1019</div>
+                </div>
+                <span class="badge badge-resolved">Resolved</span>
+              </div>
+              <div class="ticket-item-title">API rate limit issue</div>
+              <div class="ticket-item-meta">
+                <span class="ticket-item-author">Anita Choudhary · 1d ago</span>
+                <span class="ticket-item-comments">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                  1
+                </span>
+              </div>
+            </div>
+
+            <div class="ticket-item" data-ticket="TK-1018">
+              <div class="ticket-item-header">
+                <div class="ticket-avatar av-yellow">MK</div>
+                <div style="flex:1;min-width:0">
+                  <div class="ticket-item-id">#TK-1018</div>
+                </div>
+                <span class="badge badge-resolved">Resolved</span>
+              </div>
+              <div class="ticket-item-title">Can't export reports</div>
+              <div class="ticket-item-meta">
+                <span class="ticket-item-author">Manoj Kaul · 1d ago</span>
+                <span class="ticket-item-comments">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+                  2
+                </span>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="pagination">
+            <span class="text-muted text-xs" style="margin-right:auto;padding-left:14px">Showing 1-7 of 14</span>
+            <button class="pagination-btn" id="prevPage">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            </button>
+            <button class="pagination-btn active">1</button>
+            <button class="pagination-btn">2</button>
+            <button class="pagination-btn" id="nextPage">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Ticket Detail -->
+        <div class="ticket-detail-panel">
+          <div class="ticket-detail-header">
+            <div class="ticket-detail-top">
+              <span class="ticket-detail-id">#TK-1024</span>
+              <button class="btn-icon btn-ghost" title="Copy link">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+              </button>
+              <button class="btn-icon btn-ghost" title="Star ticket">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </button>
+              <span class="badge badge-high">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10"/></svg>
+                High
+              </span>
+
+              <div class="ticket-detail-actions">
+                <button class="btn btn-secondary btn-sm" id="closeTicketBtn">Close Ticket</button>
+                <div class="dropdown" id="updateBtnMenu">
+                  <button class="btn btn-primary btn-sm">
+                    Update
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                  <div class="dropdown-menu" id="updateDropdown">
+                    <div class="dropdown-item">Save changes</div>
+                    <div class="dropdown-item">Mark as Pending</div>
+                    <div class="dropdown-item">Mark as Resolved</div>
+                  </div>
+                </div>
+                <div class="dropdown" id="moreBtnMenu">
+                  <button class="btn-icon btn-secondary">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                  </button>
+                  <div class="dropdown-menu" id="moreDropdown">
+                    <div class="dropdown-item">Merge ticket</div>
+                    <div class="dropdown-item">Print ticket</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item danger">Delete ticket</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="ticket-detail-title">Unable to login to account</div>
+          </div>
+
+          <div class="ticket-tabs">
+            <button class="ticket-tab active" data-tab="conversation">Conversation</button>
+            <button class="ticket-tab" data-tab="notes">Internal Notes <span class="tab-count">2</span></button>
+            <button class="ticket-tab" data-tab="activity">Activity</button>
+            <button class="ticket-tab" data-tab="attachments">Attachments <span class="tab-count">1</span></button>
+          </div>
+
+          <div class="ticket-tab-content active" data-tab-content="conversation">
+            <div class="conversation-area" id="conversationArea">
+
+              <div class="message">
+                <div class="message-avatar av-blue">AJ</div>
+                <div class="message-body">
+                  <div class="message-header">
+                    <span class="message-author">Aarav Joshi</span>
+                    <span class="message-time">2m ago</span>
+                  </div>
+                  <div class="message-bubble">
+                    <p class="message-text">I'm unable to login to my account. I tried resetting my password but didn't receive any email.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="message">
+                <div class="message-avatar av-purple">OS</div>
+                <div class="message-body">
+                  <div class="message-header">
+                    <span class="message-author">Ojash Singh</span>
+                    <span class="badge badge-brand">Agent</span>
+                    <span class="message-time">1m ago</span>
+                    <span class="message-edited">(Edited)</span>
+                  </div>
+                  <div class="message-bubble agent">
+                    <p class="message-text">Hi Aarav,<br><br>I'm sorry you're facing this issue. Let me help you with that. Could you please confirm the email associated with your account?</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="message">
+                <div class="message-avatar av-blue">AJ</div>
+                <div class="message-body">
+                  <div class="message-header">
+                    <span class="message-author">Aarav Joshi</span>
+                    <span class="message-time">Just now</span>
+                  </div>
+                  <div class="message-bubble">
+                    <p class="message-text">Yes, it's aarav.joshi@email.com</p>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <div class="quick-actions">
+              <button class="quick-action-btn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+                Reset Password
+              </button>
+              <button class="quick-action-btn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><polyline points="9 12 12 15 16 10"/></svg>
+                Verify Email
+              </button>
+              <button class="quick-action-btn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>
+                Check Spam Folder
+              </button>
+              <button class="quick-action-btn">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/><circle cx="5" cy="12" r="1"/></svg>
+                More
+              </button>
+            </div>
+
+            <div class="reply-area">
+              <div class="reply-tabs">
+                <button class="reply-tab active" data-reply-tab="reply">Reply</button>
+                <button class="reply-tab" data-reply-tab="note">Internal Note</button>
+              </div>
+              <div class="reply-input-area">
+                <textarea class="reply-input" id="replyInput" placeholder="Type your reply..."></textarea>
+              </div>
+              <div class="reply-toolbar">
+                <button class="reply-tool-btn" title="Attach file">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+                </button>
+                <button class="reply-tool-btn" title="Emoji">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9" y2="9"/><line x1="15" y1="9" x2="15" y2="9"/></svg>
+                </button>
+                <button class="reply-tool-btn" title="Canned responses">
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3" y2="6"/><line x1="3" y1="12" x2="3" y2="12"/><line x1="3" y1="18" x2="3" y2="18"/></svg>
+                </button>
+                <button class="btn btn-ghost btn-sm" id="aiAssistBtn">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"/></svg>
+                  AI Assist
+                </button>
+                <div class="reply-send-btn">
+                  <button class="btn btn-primary btn-sm" id="sendReplyBtn">Send</button>
+                  <button class="reply-send-dropdown">
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-tab-content" data-tab-content="notes">
+            <div class="conversation-area">
+              <div class="empty-state">
+                <div class="empty-state-icon">📝</div>
+                <div class="empty-state-title">2 internal notes</div>
+                <div class="empty-state-desc">Notes are only visible to your support team, not the customer.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-tab-content" data-tab-content="activity">
+            <div class="conversation-area">
+              <div class="timeline">
+                <div class="timeline-item">
+                  <div class="timeline-dot done"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Ticket created by Aarav Joshi</div>
+                    <div class="timeline-time">2m ago</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot done"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Assigned to Ojash Singh</div>
+                    <div class="timeline-time">2m ago</div>
+                  </div>
+                </div>
+                <div class="timeline-item">
+                  <div class="timeline-dot pending"></div>
+                  <div class="timeline-content">
+                    <div class="timeline-title">Waiting on customer reply</div>
+                    <div class="timeline-time">Just now</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-tab-content" data-tab-content="attachments">
+            <div class="conversation-area">
+              <div class="empty-state">
+                <div class="empty-state-icon">📎</div>
+                <div class="empty-state-title">1 attachment</div>
+                <div class="empty-state-desc">screenshot-login-error.png</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ticket Sidebar -->
+        <div class="ticket-sidebar">
+
+          <div class="ticket-sidebar-section">
+            <div class="ticket-sidebar-section-title">
+              Customer
+              <button class="ticket-sidebar-toggle open">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+              </button>
+            </div>
+            <div class="customer-info-block">
+              <div class="customer-big-avatar av-blue">AJ</div>
+              <div>
+                <div class="customer-name">Aarav Joshi <span class="badge badge-vip">VIP</span></div>
+                <div class="customer-email">
+                  <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+                  aarav.joshi@email.com
+                </div>
+              </div>
+            </div>
+            <div class="customer-detail-row">
+              <svg class="icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Mumbai, Maharashtra
+            </div>
+            <div class="customer-detail-row">
+              <svg class="icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+              +91 98201 23456
+            </div>
+            <div class="customer-stats">
+              <div class="customer-stat">
+                <div class="customer-stat-label">Customer Since</div>
+                <div class="customer-stat-value">Jan 2023</div>
+              </div>
+              <div class="customer-stat">
+                <div class="customer-stat-label">Total Tickets</div>
+                <div class="customer-stat-value">12</div>
+              </div>
+              <div class="customer-stat">
+                <div class="customer-stat-label">Avg CSAT</div>
+                <div class="customer-stat-value">4.8 ★</div>
+              </div>
+              <div class="customer-stat">
+                <div class="customer-stat-label">Plan</div>
+                <div class="customer-stat-value">Pro</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="ticket-sidebar-section">
+            <div class="ticket-sidebar-section-title">Ticket Properties</div>
+            <div class="prop-row">
+              <span class="prop-label">Status</span>
+              <select class="prop-select" id="propStatus">
+                <option>Open</option>
+                <option>Pending</option>
+                <option>Resolved</option>
+                <option>Closed</option>
+              </select>
+            </div>
+            <div class="prop-row">
+              <span class="prop-label">Priority</span>
+              <select class="prop-select" id="propPriority">
+                <option>Urgent</option>
+                <option selected>High</option>
+                <option>Medium</option>
+                <option>Low</option>
+              </select>
+            </div>
+            <div class="prop-row">
+              <span class="prop-label">Assign to</span>
+              <select class="prop-select" id="propAssignee">
+                <option selected>Ojash Singh</option>
+                <option>Priya Sharma</option>
+                <option>Rohan Mehta</option>
+              </select>
+            </div>
+            <div class="prop-row">
+              <span class="prop-label">Channel</span>
+              <span class="prop-value">Web Form</span>
+            </div>
+            <div class="divider"></div>
+            <div class="prop-label" style="margin-bottom:6px">Tags</div>
+            <div class="tags-row">
+              <span class="tag-chip">Login Issue</span>
+              <span class="tag-chip">Account</span>
+              <button class="tag-add-btn">+ Add</button>
+            </div>
+          </div>
+
+          <div class="ai-copilot-box">
+            <div class="ai-copilot-header">
+              <div class="ai-copilot-title">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"/></svg>
+                AI Copilot <span class="badge badge-beta">Beta</span>
+              </div>
+            </div>
+            <p class="ai-copilot-body">This customer is unable to login. Password reset email not received. This seems to be an email delivery issue.</p>
+            <div class="ai-suggestions">
+              <div class="ai-suggestion-item">Verify email address</div>
+              <div class="ai-suggestion-item">Resend password reset email</div>
+              <div class="ai-suggestion-item">Check spam or promotions folder</div>
+            </div>
+            <button class="ai-apply-btn" id="applySuggestionsBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.5 4.5L18 9l-4.5 1.5L12 15l-1.5-4.5L6 9l4.5-1.5z"/></svg>
+              Apply Suggestions
+            </button>
+          </div>
+
+          <div class="ticket-sidebar-section">
+            <div class="ticket-sidebar-section-title">
+              Recent Activity
+              <a class="activity-view-all" href="tickets.html">View all</a>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text">Password reset requested<br><span class="activity-time">2m ago</span></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text">Email changed<br><span class="activity-time">3d ago</span></div>
+            </div>
+            <div class="activity-item">
+              <div class="activity-dot"></div>
+              <div class="activity-text">Login attempt failed<br><span class="activity-time">3d ago</span></div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- New Ticket Modal -->
+<div class="modal-overlay" id="newTicketModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">Create New Ticket</div>
+      <button class="modal-close" id="closeNewTicketModal">✕</button>
+    </div>
+    <form id="newTicketForm">
+      <div class="form-group">
+        <label class="form-label">Subject</label>
+        <input class="form-input" type="text" id="ntSubject" placeholder="Brief summary of the issue" required>
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select class="form-select" id="ntCategory">
+            <option>Technical Issue</option>
+            <option>Billing</option>
+            <option>Account</option>
+            <option>Feature Request</option>
+            <option>General Inquiry</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Priority</label>
+          <select class="form-select" id="ntPriority">
+            <option>Low</option>
+            <option selected>Medium</option>
+            <option>High</option>
+            <option>Urgent</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Customer Email</label>
+        <input class="form-input" type="email" id="ntEmail" placeholder="customer@email.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Description</label>
+        <textarea class="form-textarea" id="ntDescription" placeholder="Describe the issue in detail..." required></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelNewTicket">Cancel</button>
+        <button type="submit" class="btn btn-primary">Create Ticket</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- What's New Modal -->
+<div class="modal-overlay" id="whatsNewModal">
+  <div class="modal" style="max-width:520px;">
+    <div class="modal-header">
+      <div class="modal-title">🎉 What's New in Ojash Desk</div>
+      <button class="modal-close" id="closeWhatsNewModal">✕</button>
+    </div>
+    <div style="padding:20px;max-height:70vh;overflow-y:auto;">
+      <div style="margin-bottom:18px;">
+        <div style="font-size:0.75rem;font-weight:600;color:var(--brand-accent);margin-bottom:6px;">v2.4 — June 2026</div>
+        <div style="font-size:0.9rem;font-weight:600;color:var(--text-primary);margin-bottom:4px;">✨ AI Copilot Improvements</div>
+        <div style="font-size:0.82rem;color:var(--text-secondary);">AI suggestions are now faster and more accurate, with better context from conversation history.</div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <div style="font-size:0.9rem;font-weight:600;color:var(--text-primary);margin-bottom:4px;">📊 Analytics Dashboard v2</div>
+        <div style="font-size:0.82rem;color:var(--text-secondary);">New charts, team performance breakdowns, and exportable reports.</div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <div style="font-size:0.9rem;font-weight:600;color:var(--text-primary);margin-bottom:4px;">⚡ SLA Breach Alerts</div>
+        <div style="font-size:0.82rem;color:var(--text-secondary);">Real-time notifications when tickets are about to breach their SLA deadlines.</div>
+      </div>
+      <div style="margin-bottom:18px;">
+        <div style="font-size:0.9rem;font-weight:600;color:var(--text-primary);margin-bottom:4px;">🏷️ Smart Ticket Tagging</div>
+        <div style="font-size:0.82rem;color:var(--text-secondary);">Tickets are now auto-tagged based on content using NLP classification.</div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-primary" id="closeWhatsNewModalBtn">Got it!</button>
+    </div>
+  </div>
+</div>
+
+<script src="data.js"></script>
+<script src="api.js"></script>
+<script src="app.js"></script>
+<script src="fixes.js"></script>
+<script src="effects.js"></script>
+</body>
+</html><!-- ========== OJASHDESK SHARED + INBOX ANIMATIONS ========== -->
+<style>
+/* ── Shared keyframes (identical to home.html) ── */
+@keyframes od-fadeUp   { from { opacity:0; transform:translateY(18px) } to { opacity:1; transform:translateY(0) } }
+@keyframes od-fadeIn   { from { opacity:0 } to { opacity:1 } }
+@keyframes od-slideInL { from { opacity:0; transform:translateX(-22px) } to { opacity:1; transform:translateX(0) } }
+@keyframes od-slideInR { from { opacity:0; transform:translateX(22px) } to { opacity:1; transform:translateX(0) } }
+@keyframes od-slideInT { from { opacity:0; transform:translateY(-14px) } to { opacity:1; transform:translateY(0) } }
+@keyframes od-scaleIn  { from { opacity:0; transform:scale(0.93) } to { opacity:1; transform:scale(1) } }
+
+/* ── Sidebar slides in from left ── */
+.sidebar { animation: od-slideInL .45s cubic-bezier(.22,.68,0,1.2) both; }
+
+/* ── Topbar slides down ── */
+.topbar  { animation: od-slideInT .4s cubic-bezier(.22,.68,0,1.2) .1s both; }
+
+/* ── Nav items stagger in ── */
+.nav-item { opacity:0; animation: od-fadeUp .35s ease both; }
+.nav-item:nth-child(1)  { animation-delay:.15s }
+.nav-item:nth-child(2)  { animation-delay:.19s }
+.nav-item:nth-child(3)  { animation-delay:.23s }
+.nav-item:nth-child(4)  { animation-delay:.27s }
+.nav-item:nth-child(5)  { animation-delay:.31s }
+.nav-item:nth-child(6)  { animation-delay:.35s }
+.nav-item:nth-child(7)  { animation-delay:.39s }
+.nav-item:nth-child(8)  { animation-delay:.43s }
+.nav-item:nth-child(9)  { animation-delay:.47s }
+.nav-item:nth-child(10) { animation-delay:.51s }
+.nav-item:nth-child(11) { animation-delay:.55s }
+.nav-item:nth-child(12) { animation-delay:.59s }
+.nav-item:nth-child(13) { animation-delay:.63s }
+
+/* ── Ticket list panel slides in from left ── */
+.ticket-list-panel {
+  opacity:0;
+  animation: od-slideInL .5s cubic-bezier(.22,.68,0,1.2) .25s both;
+}
+
+/* ── Ticket items stagger up ── */
+.ticket-item {
+  opacity:0;
+  animation: od-fadeUp .38s ease both;
+}
+.ticket-item:nth-child(1) { animation-delay:.45s }
+.ticket-item:nth-child(2) { animation-delay:.52s }
+.ticket-item:nth-child(3) { animation-delay:.59s }
+.ticket-item:nth-child(4) { animation-delay:.66s }
+.ticket-item:nth-child(5) { animation-delay:.73s }
+.ticket-item:nth-child(6) { animation-delay:.80s }
+.ticket-item:nth-child(7) { animation-delay:.87s }
+.ticket-item:nth-child(8) { animation-delay:.94s }
+
+/* ── Ticket detail panel slides in from right ── */
+.ticket-detail-panel {
+  opacity:0;
+  animation: od-slideInR .5s cubic-bezier(.22,.68,0,1.2) .35s both;
+}
+
+/* ── Ticket sidebar (right meta panel) fades up ── */
+.ticket-sidebar {
+  opacity:0;
+  animation: od-fadeUp .5s cubic-bezier(.22,.68,0,1.2) .5s both;
+}
+
+/* ── Ticket sidebar sections stagger ── */
+.ticket-sidebar-section {
+  opacity:0;
+  animation: od-fadeUp .4s ease both;
+}
+.ticket-sidebar-section:nth-child(1) { animation-delay:.6s }
+.ticket-sidebar-section:nth-child(2) { animation-delay:.7s }
+.ticket-sidebar-section:nth-child(3) { animation-delay:.8s }
+
+/* ── AI copilot box ── */
+.ai-copilot-box {
+  opacity:0;
+  animation: od-scaleIn .45s cubic-bezier(.22,.68,0,1.2) .75s both;
+}
+
+/* ── Messages inside conversation stagger ── */
+.message {
+  opacity:0;
+  animation: od-fadeUp .38s ease both;
+}
+.message:nth-child(1) { animation-delay:.55s }
+.message:nth-child(2) { animation-delay:.68s }
+.message:nth-child(3) { animation-delay:.81s }
+
+/* ── Timeline items stagger ── */
+.timeline-item {
+  opacity:0;
+  animation: od-slideInL .35s ease both;
+}
+.timeline-item:nth-child(1) { animation-delay:.6s }
+.timeline-item:nth-child(2) { animation-delay:.72s }
+.timeline-item:nth-child(3) { animation-delay:.84s }
+
+/* ── Customer stats count-up targets ── */
+.customer-stat-value { will-change: contents; }
+
+/* ── Filter tabs fade in ── */
+.ticket-filter-tabs { opacity:0; animation: od-fadeIn .4s ease .3s both; }
+
+/* ── Nav badge pop ── */
+.nav-badge {
+  animation: od-scaleIn .3s cubic-bezier(.22,.68,0,1.5) .8s both;
+  display:inline-flex;
+}
+</style>
+
+<script>
+/* ── COUNT-UP for customer stats in ticket sidebar ── */
+(function() {
+  function countUp(el, target, duration, suffix, decimals) {
+    suffix = suffix || ''; decimals = decimals || 0;
+    const start = performance.now();
+    function tick(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3);
+      const val = eased * target;
+      el.textContent = (decimals ? val.toFixed(decimals) : Math.round(val)) + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+      else el.textContent = (decimals ? target.toFixed(decimals) : target) + suffix;
+    }
+    requestAnimationFrame(tick);
+  }
+
+  window.addEventListener('load', function() {
+    // Customer stats: Total Tickets = 12, Avg CSAT = 4.8
+    setTimeout(function() {
+      const statEls = document.querySelectorAll('.customer-stat-value');
+      statEls.forEach(function(el) {
+        const raw = el.textContent.trim();
+        // Total Tickets
+        if (raw === '12') { el.textContent = '0'; countUp(el, 12, 600, '', 0); }
+        // Avg CSAT
+        if (raw === '4.8 ★') { el.textContent = '0.0 ★'; countUp(el, 4.8, 700, ' ★', 1); }
+      });
+    }, 720);
+
+    /* ── Nav badge numbers count up ── */
+    setTimeout(function() {
+      document.querySelectorAll('.nav-badge').forEach(function(badge) {
+        const n = parseInt(badge.textContent);
+        if (!isNaN(n) && n > 0) {
+          badge.textContent = '0';
+          countUp(badge, n, 500, '', 0);
+        }
+      });
+      // filter tab counts
+      document.querySelectorAll('.filter-tab .count').forEach(function(el) {
+        const n = parseInt(el.textContent);
+        if (!isNaN(n) && n > 0) {
+          el.textContent = '0';
+          countUp(el, n, 500, '', 0);
+        }
+      });
+    }, 500);
+  });
+})();
+</script>

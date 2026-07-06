@@ -1,0 +1,408 @@
+{
+  "tickets": [
+    {
+      "id": "TK-1026",
+      "subject": "test  2",
+      "customer": "Ojash",
+      "email": "ojash@gmail.com",
+      "status": "open",
+      "priority": "Medium",
+      "category": "Technical Issue",
+      "assignee": "Ojash Singh",
+      "sla": "8h left",
+      "updated": "just now",
+      "avatar": "av-blue",
+      "channel": "web",
+      "tags": [],
+      "messages": [
+        {
+          "from": "customer",
+          "name": "Customer",
+          "initials": "??",
+          "avatar": "av-blue",
+          "time": "Just now",
+          "text": "testingh"
+        }
+      ],
+      "aiSuggestion": "",
+      "aiActions": [],
+      "activity": [],
+      "internalNotes": [],
+      "created": "2026-07-03T21:32:16.146Z"
+    },
+    {
+      "id": "TK-1025",
+      "subject": "Test ticket",
+      "customer": "Test User",
+      "email": "test@test.com",
+      "status": "open",
+      "priority": "Medium",
+      "category": "General Inquiry",
+      "assignee": "Unassigned",
+      "sla": "—",
+      "updated": "just now",
+      "avatar": "av-blue",
+      "channel": "web",
+      "tags": [],
+      "messages": [],
+      "aiSuggestion": "",
+      "aiActions": [],
+      "activity": [],
+      "internalNotes": [],
+      "created": "2026-07-03T20:16:07.497Z"
+    },
+    {
+      "id": "TK-1024",
+      "subject": "Unable to login to account",
+      "customer": "Aarav Joshi",
+      "email": "aarav.joshi@email.com",
+      "status": "open",
+      "priority": "High",
+      "category": "Account",
+      "assignee": "Ojash Singh",
+      "sla": "2h left",
+      "updated": "5m ago",
+      "avatar": "av-blue",
+      "channel": "web",
+      "tags": [
+        "login",
+        "account"
+      ],
+      "messages": [
+        {
+          "from": "customer",
+          "name": "Aarav Joshi",
+          "initials": "AJ",
+          "avatar": "av-blue",
+          "time": "10m ago",
+          "text": "I am unable to login to my account. It says invalid credentials but I just changed my password."
+        },
+        {
+          "from": "agent",
+          "name": "Ojash Singh",
+          "initials": "OS",
+          "avatar": "av-purple",
+          "time": "5m ago",
+          "text": "Hi Aarav, I can help you with that. Let me check your account status right away."
+        }
+      ],
+      "aiSuggestion": "This looks like a login issue. The customer may have reset their password recently.",
+      "aiActions": [
+        "Resend the password reset email",
+        "Check if account is locked",
+        "Verify the email address on file"
+      ],
+      "activity": [],
+      "internalNotes": [],
+      "created": "2026-07-03T20:13:35.337Z"
+    },
+    {
+      "id": "TK-1023",
+      "subject": "Payment failed but amount deducted",
+      "customer": "Simran Kaur",
+      "email": "simran.k@techcorp.com",
+      "status": "open",
+      "priority": "Medium",
+      "category": "Billing",
+      "assignee": "Priya Sharma",
+      "sla": "5h left",
+      "updated": "1h ago",
+      "avatar": "av-pink",
+      "channel": "email",
+      "tags": [
+        "billing",
+        "payment"
+      ],
+      "messages": [
+        {
+          "from": "customer",
+          "name": "Simran Kaur",
+          "initials": "SK",
+          "avatar": "av-pink",
+          "time": "1h ago",
+          "text": "My payment failed but the amount was deducted from my bank account. Please help!"
+        }
+      ],
+      "aiSuggestion": "Billing issue — check the payment gateway for the original transaction.",
+      "aiActions": [
+        "Check transaction status in payment gateway",
+        "Look for duplicate charges",
+        "Initiate refund if charge confirmed"
+      ],
+      "activity": [],
+      "internalNotes": [],
+      "created": "2026-07-03T20:13:35.338Z"
+    },
+    {
+      "id": "TK-1022",
+      "subject": "Refund not received after 7 days",
+      "customer": "Rajesh Tiwari",
+      "email": "rajesh.t@startup.io",
+      "status": "pending",
+      "priority": "Medium",
+      "category": "Billing",
+      "assignee": "Rohan Mehta",
+      "sla": "8h left",
+      "updated": "2h ago",
+      "avatar": "av-green",
+      "channel": "web",
+      "tags": [
+        "refund",
+        "billing"
+      ],
+      "messages": [
+        {
+          "from": "customer",
+          "name": "Rajesh Tiwari",
+          "initials": "RT",
+          "avatar": "av-green",
+          "time": "2h ago",
+          "text": "I raised a refund request 7 days ago but have not received the amount yet."
+        },
+        {
+          "from": "agent",
+          "name": "Rohan Mehta",
+          "initials": "RM",
+          "avatar": "av-teal",
+          "time": "1h ago",
+          "text": "Hi Rajesh, I apologize for the delay. I am looking into this right now."
+        }
+      ],
+      "aiSuggestion": "Refund delays are often due to payment gateway processing times.",
+      "aiActions": [
+        "Check refund eligibility",
+        "Verify original transaction",
+        "Process refund and send confirmation email"
+      ],
+      "activity": [],
+      "internalNotes": [],
+      "created": "2026-07-03T20:13:35.338Z"
+    },
+    {
+      "id": "TK-1021",
+      "subject": "API rate limit exceeded error",
+      "customer": "Neha Gupta",
+      "email": "neha.g@devtools.io",
+      "status": "open",
+      "priority": "Urgent",
+      "category": "Technical Issue",
+      "assignee": "Ojash Singh",
+      "sla": "1h left",
+      "updated": "30m ago",
+      "avatar": "av-orange",
+      "channel": "web",
+      "tags": [
+        "api",
+        "technical"
+      ],
+      "messages": [
+        {
+          "from": "customer",
+          "name": "Neha Gupta",
+          "initials": "NG",
+          "avatar": "av-orange",
+          "time": "30m ago",
+          "text": "We are getting 429 rate limit errors on all our API calls. Our entire production is down!"
+        }
+      ],
+      "aiSuggestion": "API rate limit issue — customer is likely hitting the plan limit.",
+      "aiActions": [
+        "Check current rate limit usage",
+        "Verify the API key is active",
+        "Suggest plan upgrade if needed"
+      ],
+      "activity": [],
+      "internalNotes": [],
+      "created": "2026-07-03T20:13:35.338Z"
+    },
+    {
+      "id": "TK-1020",
+      "subject": "Feature request: dark mode for dashboard",
+      "customer": "Arjun Sharma",
+      "email": "arjun.s@designco.in",
+      "status": "resolved",
+      "priority": "Low",
+      "category": "Feature Request",
+      "assignee": "Priya Sharma",
+      "sla": "—",
+      "updated": "1d ago",
+      "avatar": "av-teal",
+      "channel": "email",
+      "tags": [
+        "feature",
+        "ui"
+      ],
+      "messages": [
+        {
+          "from": "customer",
+          "name": "Arjun Sharma",
+          "initials": "AS",
+          "avatar": "av-teal",
+          "time": "1d ago",
+          "text": "Can you add a dark mode option to the dashboard? It would really help during late night work."
+        },
+        {
+          "from": "agent",
+          "name": "Priya Sharma",
+          "initials": "PS",
+          "avatar": "av-blue",
+          "time": "1d ago",
+          "text": "Great feedback! Dark mode is already on our roadmap. I will pass this along to the product team."
+        }
+      ],
+      "aiSuggestion": "Feature request — already on roadmap.",
+      "aiActions": [
+        "Check roadmap for this request",
+        "Update customer with timeline",
+        "Log feedback for product team"
+      ],
+      "activity": [],
+      "internalNotes": [],
+      "created": "2026-07-03T20:13:35.338Z"
+    }
+  ],
+  "customers": [
+    {
+      "id": "c1",
+      "name": "Aarav Joshi",
+      "email": "aarav.joshi@email.com",
+      "company": "Acme Corp",
+      "plan": "Pro",
+      "phone": "+91 98765 43210",
+      "location": "Mumbai, India",
+      "since": "Jan 15, 2025",
+      "tickets": 8,
+      "lifetime": "$480.00",
+      "csat": 4.2,
+      "orders": 12,
+      "initials": "AJ",
+      "avatar": "av-blue"
+    },
+    {
+      "id": "c2",
+      "name": "Simran Kaur",
+      "email": "simran.k@techcorp.com",
+      "company": "TechCorp",
+      "plan": "Enterprise",
+      "phone": "+91 91234 56789",
+      "location": "Bangalore, India",
+      "since": "Mar 3, 2024",
+      "tickets": 23,
+      "lifetime": "$2,400.00",
+      "csat": 4.8,
+      "orders": 36,
+      "initials": "SK",
+      "avatar": "av-pink"
+    },
+    {
+      "id": "c3",
+      "name": "Rajesh Tiwari",
+      "email": "rajesh.t@startup.io",
+      "company": "StartupIO",
+      "plan": "Pro",
+      "phone": "+91 99876 54321",
+      "location": "Delhi, India",
+      "since": "Sep 10, 2024",
+      "tickets": 5,
+      "lifetime": "$300.00",
+      "csat": 3.9,
+      "orders": 6,
+      "initials": "RT",
+      "avatar": "av-green"
+    },
+    {
+      "id": "c4",
+      "name": "Neha Gupta",
+      "email": "neha.g@devtools.io",
+      "company": "DevTools IO",
+      "plan": "Enterprise",
+      "phone": "+91 90000 11111",
+      "location": "Pune, India",
+      "since": "Jun 1, 2023",
+      "tickets": 41,
+      "lifetime": "$5,800.00",
+      "csat": 4.6,
+      "orders": 72,
+      "initials": "NG",
+      "avatar": "av-orange"
+    },
+    {
+      "id": "c5",
+      "name": "Arjun Sharma",
+      "email": "arjun.s@designco.in",
+      "company": "DesignCo",
+      "plan": "Free",
+      "phone": "+91 88888 99999",
+      "location": "Chennai, India",
+      "since": "Nov 20, 2025",
+      "tickets": 2,
+      "lifetime": "$0.00",
+      "csat": 5,
+      "orders": 0,
+      "initials": "AS",
+      "avatar": "av-teal"
+    }
+  ],
+  "users": [
+    {
+      "id": "u1",
+      "name": "Ojash Singh",
+      "email": "ojash@ojashdesk.com",
+      "password": "$2a$10$GNNgbz/p3I5/kfyv16kTUuOBcu/v67fNWpfx8wNdjleE01AiiANui",
+      "role": "Admin",
+      "initials": "OS",
+      "avatar": "av-purple"
+    }
+  ],
+  "kbArticles": [
+    {
+      "id": "art1",
+      "title": "How to reset your password",
+      "category": "Account & Settings",
+      "content": "If you've forgotten your password, click \"Forgot password?\" on the login page and follow the emailed link to set a new one. Passwords must be at least 6 characters.",
+      "status": "published",
+      "author": "Ojash Singh",
+      "updated": "Jun 20, 2026",
+      "views": 1243,
+      "helpful": 58,
+      "notHelpful": 3
+    },
+    {
+      "id": "art2",
+      "title": "Setting up 2FA",
+      "category": "Account & Settings",
+      "content": "Two-factor authentication adds an extra layer of security to your account. Go to Settings → Security and follow the on-screen steps to link an authenticator app.",
+      "status": "published",
+      "author": "Ojash Singh",
+      "updated": "Jun 18, 2026",
+      "views": 860,
+      "helpful": 41,
+      "notHelpful": 2
+    },
+    {
+      "id": "art3",
+      "title": "API rate limits explained",
+      "category": "API Reference",
+      "content": "Each plan has a request-per-minute limit. Free plans allow 60 req/min, Pro allows 300 req/min, and Enterprise is custom. Exceeding the limit returns a 429 response.",
+      "status": "published",
+      "author": "Ojash Singh",
+      "updated": "Jun 15, 2026",
+      "views": 2100,
+      "helpful": 97,
+      "notHelpful": 5
+    },
+    {
+      "id": "art4",
+      "title": "Connecting Slack integration",
+      "category": "Integrations",
+      "content": "Navigate to Settings → Integrations → Slack and click Connect. You'll be asked to authorize the app in your Slack workspace, after which new tickets can post to a channel of your choice.",
+      "status": "published",
+      "author": "Ojash Singh",
+      "updated": "Jun 10, 2026",
+      "views": 640,
+      "helpful": 30,
+      "notHelpful": 1
+    }
+  ],
+  "nextTicketNum": 1027
+}
