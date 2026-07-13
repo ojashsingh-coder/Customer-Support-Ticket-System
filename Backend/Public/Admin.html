@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ojash Desk · Data Console</title>
+<style>
+  :root {
+    --brand-primary:  #7c3aed;
+    --brand-secondary:#6d28d9;
+    --brand-accent:   #8b5cf6;
+    --brand-light:    #a78bfa;
+    --brand-glow:     rgba(124, 58, 237, 0.3);
+
+    --bg-base:        #0d0d14;
+    --bg-surface:     #13131f;
+    --bg-card:        #1a1a2e;
+    --bg-elevated:    #1f1f35;
+    --bg-hover:       #252540;
+
+    --text-primary:   #f0f0ff;
+    --text-secondary: #a0a0c0;
+    --text-muted:     #6060a0;
+
+    --border-subtle:  rgba(255,255,255,0.06);
+    --border-default: rgba(255,255,255,0.1);
+
+    --red:    #ef4444; --red-bg:    rgba(239,68,68,0.12);
+    --orange: #f59e0b; --orange-bg: rgba(245,158,11,0.12);
+    --teal:   #14b8a6; --teal-bg:   rgba(20,184,166,0.12);
+    --gray:   #6b7280; --gray-bg:   rgba(107,114,128,0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-base);
+    color: var(--text-primary);
+    min-height: 100vh;
+  }
+
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 32px;
+    border-bottom: 1px solid var(--border-subtle);
+    background: var(--bg-surface);
+  }
+
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-mark {
+    width: 30px; height: 30px; border-radius: 8px;
+    background: var(--brand-primary);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .brand h1 { font-size: 1rem; font-weight: 700; letter-spacing: -0.01em; }
+  .brand p { font-size: 0.72rem; color: var(--text-muted); }
+
+  .stats-strip { display: flex; gap: 24px; }
+  .stat { text-align: right; }
+  .stat .num { font-size: 1.15rem; font-weight: 700; }
+  .stat .label { font-size: 0.68rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; }
+
+  main { max-width: 1180px; margin: 0 auto; padding: 28px 32px 60px; }
+
+  .toolbar { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; }
+  .toolbar input {
+    flex: 1; max-width: 320px;
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    border-radius: 8px;
+    padding: 9px 14px;
+    color: var(--text-primary);
+    font-size: 0.85rem;
+  }
+  .toolbar input::placeholder { color: var(--text-muted); }
+  .toolbar input:focus { outline: none; border-color: var(--brand-primary); }
+
+  .filter-chip {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border-default);
+    color: var(--text-secondary);
+    border-radius: 999px;
+    padding: 7px 14px;
+    font-size: 0.78rem;
+    cursor: pointer;
+  }
+  .filter-chip.active { background: var(--brand-primary); border-color: var(--brand-primary); color: #fff; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+  }
+
+  .card {
+    position: relative;
+    background: var(--bg-card);
+    border: 1px solid var(--border-subtle);
+    border-radius: 12px;
+    padding: 16px 16px 14px;
+    padding-left: 19px;
+    overflow: hidden;
+    transition: border-color .15s;
+  }
+  .card:hover { border-color: var(--border-default); }
+  .card::before {
+    content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 3px;
+    background: var(--gray);
+  }
+  .card.p-urgent::before { background: var(--red); }
+  .card.p-high::before   { background: var(--orange); }
+  .card.p-medium::before { background: var(--brand-accent); }
+  .card.p-low::before    { background: var(--gray); }
+
+  .card-top { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+
+  .avatar {
+    width: 38px; height: 38px; border-radius: 10px; flex-shrink: 0;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.75rem; font-weight: 700; color: #fff;
+  }
+  .av-blue   { background: linear-gradient(135deg,#3b82f6,#1d4ed8); }
+  .av-green  { background: linear-gradient(135deg,#22c55e,#15803d); }
+  .av-orange { background: linear-gradient(135deg,#f59e0b,#b45309); }
+  .av-pink   { background: linear-gradient(135deg,#ec4899,#be185d); }
+  .av-teal   { background: linear-gradient(135deg,#14b8a6,#0f766e); }
+  .av-purple { background: linear-gradient(135deg,#a855f7,#7c3aed); }
+
+  .card-id { font-size: 0.68rem; color: var(--text-muted); font-family: 'SFMono-Regular', Consolas, monospace; }
+  .card-subject {
+    font-size: 0.88rem; font-weight: 600; line-height: 1.3; margin-top: 2px;
+    display: -webkit-box; line-clamp: 2; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+
+  .card-meta { display: flex; align-items: center; justify-content: space-between; font-size: 0.76rem; color: var(--text-secondary); margin-bottom: 12px; }
+
+  .pill { font-size: 0.68rem; font-weight: 600; padding: 3px 9px; border-radius: 999px; text-transform: capitalize; }
+  .pill-open     { background: var(--teal-bg); color: var(--teal); }
+  .pill-pending  { background: var(--orange-bg); color: var(--orange); }
+  .pill-resolved { background: rgba(139,92,246,0.14); color: var(--brand-light); }
+  .pill-closed   { background: var(--gray-bg); color: var(--gray); }
+
+  .card-actions { display: flex; gap: 8px; padding-top: 12px; border-top: 1px solid var(--border-subtle); }
+  .icon-btn {
+    flex: 1; display: flex; align-items: center; justify-content: center; gap: 6px;
+    background: var(--bg-elevated); border: 1px solid var(--border-default);
+    color: var(--text-secondary); border-radius: 7px; padding: 7px; font-size: 0.76rem;
+    cursor: pointer; transition: background .12s, color .12s;
+  }
+  .icon-btn:hover { background: var(--bg-hover); color: var(--text-primary); }
+  .icon-btn.danger:hover { background: rgba(239,68,68,0.12); color: var(--red); border-color: rgba(239,68,68,0.3); }
+
+  .empty { text-align: center; padding: 80px 20px; color: var(--text-muted); }
+
+  .modal-overlay {
+    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+    align-items: center; justify-content: center; z-index: 999; padding: 20px;
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--bg-card); border: 1px solid var(--border-default);
+    border-radius: 14px; width: 100%; max-width: 420px; padding: 22px;
+  }
+  .modal h3 { font-size: 1rem; margin-bottom: 16px; }
+  .field { margin-bottom: 14px; }
+  .field label { display: block; font-size: 0.76rem; color: var(--text-secondary); margin-bottom: 6px; }
+  .field input, .field select, .field textarea {
+    width: 100%; background: var(--bg-elevated); border: 1px solid var(--border-default);
+    border-radius: 7px; padding: 9px 11px; color: var(--text-primary); font-size: 0.85rem; font-family: inherit;
+  }
+  .field input:focus, .field select:focus, .field textarea:focus { outline: none; border-color: var(--brand-primary); }
+  .modal-actions { display: flex; gap: 10px; margin-top: 18px; }
+  .btn { flex: 1; padding: 10px; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; }
+  .btn-primary { background: var(--brand-primary); color: #fff; }
+  .btn-primary:hover { background: var(--brand-secondary); }
+  .btn-cancel { background: var(--bg-elevated); color: var(--text-secondary); border: 1px solid var(--border-default); }
+
+  .toast {
+    position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--bg-elevated); border: 1px solid var(--border-default); color: var(--text-primary);
+    padding: 12px 20px; border-radius: 9px; font-size: 0.83rem; opacity: 0; transition: all .2s; z-index: 1000;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="brand-mark">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+    </div>
+    <div>
+      <h1>Ojash Desk</h1>
+      <p>Data console · MongoDB</p>
+    </div>
+  </div>
+  <div class="stats-strip">
+    <div class="stat"><div class="num" id="statTotal">0</div><div class="label">Tickets</div></div>
+    <div class="stat"><div class="num" id="statOpen">0</div><div class="label">Open</div></div>
+    <div class="stat"><div class="num" id="statResolved">0</div><div class="label">Resolved</div></div>
+  </div>
+</header>
+
+<main>
+  <div class="toolbar">
+    <input type="text" id="searchInput" placeholder="Search by subject or customer…">
+    <button class="filter-chip active" data-status="all">All</button>
+    <button class="filter-chip" data-status="open">Open</button>
+    <button class="filter-chip" data-status="pending">Pending</button>
+    <button class="filter-chip" data-status="resolved">Resolved</button>
+    <button class="filter-chip" data-status="closed">Closed</button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+</main>
+
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h3>Edit ticket</h3>
+    <div class="field">
+      <label>Subject</label>
+      <input type="text" id="editSubject">
+    </div>
+    <div class="field">
+      <label>Status</label>
+      <select id="editStatus">
+        <option value="open">Open</option>
+        <option value="pending">Pending</option>
+        <option value="resolved">Resolved</option>
+        <option value="closed">Closed</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Priority</label>
+      <select id="editPriority">
+        <option value="Low">Low</option>
+        <option value="Medium">Medium</option>
+        <option value="High">High</option>
+        <option value="Urgent">Urgent</option>
+      </select>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-cancel" id="cancelEdit">Cancel</button>
+      <button class="btn btn-primary" id="saveEdit">Save changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+const API_BASE = window.location.origin;
+let tickets = [];
+let activeFilter = 'all';
+let editingId = null;
+
+function initials(name) {
+  return (name || '?').split(' ').map(n => n[0]).join('').slice(0, 2).toUpperCase();
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2200);
+}
+
+async function loadTickets() {
+  try {
+    const res = await fetch(`${API_BASE}/tickets`);
+    tickets = await res.json();
+    render();
+  } catch (e) {
+    document.getElementById('grid').innerHTML = '<div class="empty">Could not reach the API. Is the server running?</div>';
+  }
+}
+
+function render() {
+  const grid = document.getElementById('grid');
+  const search = document.getElementById('searchInput').value.toLowerCase();
+
+  let filtered = tickets.filter(t => {
+    const matchesStatus = activeFilter === 'all' || t.status === activeFilter;
+    const matchesSearch = !search || (t.subject || '').toLowerCase().includes(search) || (t.customer || '').toLowerCase().includes(search);
+    return matchesStatus && matchesSearch;
+  });
+
+  document.getElementById('statTotal').textContent = tickets.length;
+  document.getElementById('statOpen').textContent = tickets.filter(t => t.status === 'open').length;
+  document.getElementById('statResolved').textContent = tickets.filter(t => t.status === 'resolved' || t.status === 'closed').length;
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty">No tickets match here yet.</div>';
+    return;
+  }
+
+  grid.innerHTML = filtered.map(t => {
+    const pClass = 'p-' + (t.priority || 'medium').toLowerCase();
+    return `
+      <div class="card ${pClass}">
+        <div class="card-top">
+          <div class="avatar ${t.avatar || 'av-blue'}">${initials(t.customer)}</div>
+          <div style="flex:1;min-width:0;">
+            <div class="card-id">${t.id}</div>
+            <div class="card-subject">${escapeHtml(t.subject || 'Untitled')}</div>
+          </div>
+        </div>
+        <div class="card-meta">
+          <span>${escapeHtml(t.customer || 'Unknown')}</span>
+          <span class="pill pill-${t.status}">${t.status}</span>
+        </div>
+        <div class="card-actions">
+          <button class="icon-btn" onclick="openEdit('${t.id}')">Edit</button>
+          <button class="icon-btn danger" onclick="deleteTicket('${t.id}')">Delete</button>
+        </div>
+      </div>
+    `;
+  }).join('');
+}
+
+function escapeHtml(str) {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+}
+
+function openEdit(id) {
+  const t = tickets.find(x => x.id === id);
+  if (!t) return;
+  editingId = id;
+  document.getElementById('editSubject').value = t.subject || '';
+  document.getElementById('editStatus').value = t.status || 'open';
+  document.getElementById('editPriority').value = t.priority || 'Medium';
+  document.getElementById('editModal').classList.add('open');
+}
+
+document.getElementById('cancelEdit').onclick = () => {
+  document.getElementById('editModal').classList.remove('open');
+};
+
+document.getElementById('saveEdit').onclick = async () => {
+  const body = {
+    subject: document.getElementById('editSubject').value,
+    status: document.getElementById('editStatus').value,
+    priority: document.getElementById('editPriority').value,
+  };
+  try {
+    await fetch(`${API_BASE}/tickets/${editingId}`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    document.getElementById('editModal').classList.remove('open');
+    showToast('Ticket updated');
+    loadTickets();
+  } catch (e) {
+    showToast('Could not save changes');
+  }
+};
+
+async function deleteTicket(id) {
+  if (!confirm(`Delete ticket ${id}? This can't be undone.`)) return;
+  try {
+    await fetch(`${API_BASE}/tickets/${id}`, { method: 'DELETE' });
+    showToast('Ticket deleted');
+    loadTickets();
+  } catch (e) {
+    showToast('Could not delete ticket');
+  }
+}
+
+document.querySelectorAll('.filter-chip').forEach(chip => {
+  chip.addEventListener('click', () => {
+    document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+    chip.classList.add('active');
+    activeFilter = chip.dataset.status;
+    render();
+  });
+});
+
+document.getElementById('searchInput').addEventListener('input', render);
+
+loadTickets();
+</script>
+
+</body>
+</html>

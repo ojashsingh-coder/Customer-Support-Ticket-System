@@ -1,0 +1,1036 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Log In · Ojash Desk</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap">
+<link rel="stylesheet" href="style.css">
+<style>
+
+/* Canvas layers */
+#bg-canvas, #particles-canvas {
+  position: fixed; inset: 0;
+  pointer-events: none; z-index: 0;
+}
+#bg-canvas    { z-index: 0; }
+#particles-canvas { z-index: 1; }
+
+/* Orbiting glow orbs */
+.orb {
+  position: fixed; border-radius: 50%;
+  pointer-events: none; z-index: 2;
+  filter: blur(70px); will-change: transform;
+}
+.orb-1 {
+  width: 500px; height: 500px;
+  background: radial-gradient(circle, rgba(124,58,237,0.28) 0%, transparent 70%);
+  top: -150px; left: -150px;
+  animation: orbFloat1 18s ease-in-out infinite;
+}
+.orb-2 {
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(139,92,246,0.18) 0%, transparent 70%);
+  bottom: -100px; right: -100px;
+  animation: orbFloat2 22s ease-in-out infinite;
+}
+.orb-3 {
+  width: 280px; height: 280px;
+  background: radial-gradient(circle, rgba(167,139,250,0.13) 0%, transparent 70%);
+  top: 45%; left: 62%;
+  animation: orbFloat3 16s ease-in-out infinite;
+}
+@keyframes orbFloat1 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  33%     { transform: translate(80px,60px) scale(1.12); }
+  66%     { transform: translate(-40px,100px) scale(0.94); }
+}
+@keyframes orbFloat2 {
+  0%,100% { transform: translate(0,0) scale(1); }
+  40%     { transform: translate(-60px,-80px) scale(1.09); }
+  70%     { transform: translate(50px,-30px) scale(0.91); }
+}
+@keyframes orbFloat3 {
+  0%,100% { transform: translate(-50%,-50%) scale(1); opacity: 0.6; }
+  50%     { transform: translate(-50%,-50%) scale(1.3); opacity: 1; }
+}
+
+/* Auth page wrapper — must NOT clip orbs */
+.auth-page {
+  background: #0d0d14;
+  position: relative;
+  z-index: 3; /* above orbs so content is readable, but orbs show through on edges */
+  min-height: 100vh;
+  display: flex; align-items: center; justify-content: center;
+  padding: 32px 16px;
+  background: transparent; /* canvas handles background */
+}
+
+/* Glassmorphism Card */
+.auth-card {
+  background: rgba(20, 18, 38, 0.82) !important;
+  backdrop-filter: blur(28px) saturate(200%) brightness(1.05);
+  -webkit-backdrop-filter: blur(28px) saturate(200%) brightness(1.05);
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  box-shadow:
+    0 8px 40px rgba(0,0,0,0.6),
+    0 0 0 1px rgba(124,58,237,0.10),
+    inset 0 1px 0 rgba(255,255,255,0.07) !important;
+  position: relative;
+  overflow: hidden;
+  animation: cardReveal 0.75s cubic-bezier(.22,.68,0,1.2) both;
+}
+@keyframes cardReveal {
+  from { opacity: 0; transform: translateY(36px) scale(0.95); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+/* Gradient shimmer border */
+.auth-card::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  padding: 1px;
+  background: linear-gradient(
+    135deg,
+    rgba(124,58,237,0.7) 0%,
+    rgba(167,139,250,0.4) 25%,
+    rgba(255,255,255,0.06) 50%,
+    rgba(139,92,246,0.4) 75%,
+    rgba(124,58,237,0.7) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  background-size: 300% 300%;
+  animation: borderShimmer 5s linear infinite;
+  pointer-events: none;
+}
+@keyframes borderShimmer {
+  0%   { background-position: 0% 0%; }
+  100% { background-position: 300% 300%; }
+}
+
+/* Top inner glow */
+.auth-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% -10%, rgba(124,58,237,0.10) 0%, transparent 65%);
+  pointer-events: none;
+  border-radius: inherit;
+}
+
+/* Signal strip */
+.signal-strip {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 40px;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 5;
+}
+.signal-strip svg { width: 100%; height: 100%; display: block; }
+.signal-path {
+  fill: none;
+  stroke: #8b5cf6;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  filter: drop-shadow(0 0 5px rgba(139,92,246,0.9));
+}
+.signal-path.idle {
+  stroke-dasharray: 6 540;
+  stroke-dashoffset: 0;
+  opacity: 0.55;
+  animation: signalDrift 5.5s linear infinite;
+}
+@keyframes signalDrift {
+  from { stroke-dashoffset: 0; }
+  to   { stroke-dashoffset: -546; }
+}
+.signal-path.spike {
+  display: none;
+  stroke: #34d399;
+  filter: drop-shadow(0 0 8px rgba(52,211,153,1));
+  opacity: 0;
+  stroke-dasharray: 700;
+  stroke-dashoffset: 700;
+}
+.signal-strip.active .signal-path.idle  { display: none; }
+.signal-strip.active .signal-path.spike {
+  display: block;
+  animation: signalSweep 0.9s cubic-bezier(.16,.84,.44,1) both;
+}
+@keyframes signalSweep {
+  from { stroke-dashoffset: 700; opacity: 0.9; }
+  to   { stroke-dashoffset: 0;   opacity: 0.9; }
+}
+/* JS-driven dot — see script */
+#signalDot {
+  position: absolute;
+  top: 50%; left: 0;
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: #d8b4fe;
+  box-shadow: 0 0 10px 3px rgba(167,139,250,0.9), 0 0 20px 6px rgba(124,58,237,0.5);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+.signal-strip.active #signalDot { display: none; }
+
+/* Logo */
+.auth-logo { animation: logoIn 0.65s cubic-bezier(.22,.68,0,1.2) 0.2s both; }
+@keyframes logoIn {
+  from { opacity: 0; transform: scale(0.75) translateY(-14px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+.auth-logo-icon {
+  background: linear-gradient(135deg, #7c3aed, #a78bfa) !important;
+  box-shadow: 0 0 20px rgba(124,58,237,0.55), 0 4px 14px rgba(0,0,0,0.35) !important;
+  animation: logoIconPulse 3.2s ease-in-out infinite !important;
+}
+@keyframes logoIconPulse {
+  0%,100% { box-shadow: 0 0 18px rgba(124,58,237,0.5), 0 4px 12px rgba(0,0,0,0.3); }
+  50%     { box-shadow: 0 0 36px rgba(124,58,237,0.85), 0 4px 22px rgba(0,0,0,0.4); }
+}
+
+/* Title with gradient */
+.auth-title {
+  animation: fadeUp 0.5s ease 0.3s both;
+  background: linear-gradient(135deg, #f0f0ff 0%, #c4b5fd 60%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+/* Typing cursor removed */
+.auth-subtitle { animation: fadeUp 0.5s ease 0.38s both; }
+
+@keyframes fadeUp {
+  from { opacity:0; transform: translateY(14px); }
+  to   { opacity:1; transform: translateY(0); }
+}
+
+/* Step dots */
+.auth-steps { display:flex; gap:6px; justify-content:center; margin-bottom:22px; }
+.auth-step-dot {
+  width:6px; height:6px; border-radius:50%;
+  background: rgba(255,255,255,0.15);
+  transition: all 0.4s ease;
+}
+.auth-step-dot.active { width:22px; border-radius:3px; background:var(--brand-primary); }
+
+/* Floating label fields */
+.float-group {
+  position: relative;
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s ease both;
+}
+.float-group:nth-child(1) { animation-delay: 0.45s; }
+.float-group:nth-child(2) { animation-delay: 0.52s; }
+.float-group:nth-child(3) { animation-delay: 0.59s; }
+
+.float-input {
+  width: 100%;
+  background: rgba(12,10,28,0.65);
+  border: 1px solid rgba(255,255,255,0.10);
+  border-radius: 12px;
+  padding: 22px 44px 8px 44px;
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+  outline: none;
+}
+.float-input.no-icon-left { padding-left: 16px; }
+.float-input::placeholder { color: transparent; }
+.float-input:focus {
+  border-color: var(--brand-primary);
+  background: rgba(124,58,237,0.07);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.20), 0 2px 10px rgba(124,58,237,0.12);
+}
+.float-label {
+  position: absolute;
+  left: 44px; top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.875rem;
+  color: rgba(160,160,192,0.75);
+  pointer-events: none;
+  transition: all 0.2s cubic-bezier(.22,.68,0,1.2);
+  transform-origin: left center;
+  white-space: nowrap;
+}
+.float-group.no-icon-left .float-label { left: 16px; }
+.float-input:focus + .float-label,
+.float-input:not(:placeholder-shown) + .float-label {
+  top: 10px;
+  transform: translateY(0) scale(0.78);
+  color: var(--brand-accent);
+  font-weight: 600;
+}
+.float-icon-left {
+  position: absolute; left: 14px; top: 50%;
+  transform: translateY(-50%);
+  color: rgba(160,160,192,0.45);
+  pointer-events: none;
+  transition: color 0.25s ease;
+}
+.float-input:focus ~ .float-icon-left { color: var(--brand-accent); }
+.float-icon-right {
+  position: absolute; right: 14px; top: 50%;
+  transform: translateY(-50%);
+  color: rgba(160,160,192,0.45);
+  cursor: pointer;
+  transition: color 0.25s ease;
+}
+.float-icon-right:hover { color: var(--text-primary); }
+/* Focus glow ring */
+.float-group::after {
+  content: '';
+  position: absolute; inset: 0;
+  border-radius: 12px; opacity: 0;
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.22);
+  transition: opacity 0.25s ease;
+  pointer-events: none;
+}
+.float-group:focus-within::after { opacity: 1; }
+
+/* Auth extras row */
+.auth-extras {
+  display: flex; align-items: center; justify-content: space-between;
+  margin-bottom: 20px;
+  animation: fadeUp 0.5s ease 0.60s both;
+}
+.form-check-enhanced {
+  display: flex; align-items: center; gap: 8px;
+  cursor: pointer; font-size: 0.825rem; color: var(--text-secondary);
+}
+.form-check-enhanced input[type="checkbox"] {
+  appearance: none; width: 16px; height: 16px;
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px; background: rgba(255,255,255,0.04);
+  cursor: pointer; position: relative; flex-shrink: 0;
+  transition: all 0.15s ease;
+}
+.form-check-enhanced input[type="checkbox"]:checked {
+  background: var(--brand-primary); border-color: var(--brand-primary);
+}
+.form-check-enhanced input[type="checkbox"]:checked::after {
+  content: '✓'; position: absolute; top: -1px; left: 2px;
+  font-size: 11px; color: #fff; font-weight: 700;
+}
+
+/* Submit button — magnetic effect via JS */
+.btn-auth-submit {
+  width: 100%; padding: 14px 24px;
+  background: linear-gradient(135deg, #7c3aed 0%, #6d28d9 45%, #9333ea 100%);
+  background-size: 200% 200%;
+  color: #fff; border: none; border-radius: 12px;
+  font-size: 0.95rem; font-weight: 600; font-family: 'Inter', sans-serif;
+  cursor: pointer; position: relative; overflow: hidden;
+  transition: transform 0.3s cubic-bezier(.22,.68,0,1.2), box-shadow 0.3s ease, background-position 0.5s ease;
+  animation: fadeUp 0.5s ease 0.65s both;
+  box-shadow: 0 4px 20px rgba(124,58,237,0.3);
+}
+/* Shimmer sweep on hover */
+.btn-auth-submit::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(105deg, transparent 30%, rgba(255,255,255,0.22) 50%, transparent 70%);
+  transform: translateX(-100%);
+  transition: transform 0s;
+  pointer-events: none;
+}
+.btn-auth-submit:hover {
+  background-position: 100% 100%;
+  box-shadow: 0 8px 30px rgba(124,58,237,0.6), 0 2px 8px rgba(0,0,0,0.3);
+}
+.btn-auth-submit:hover::before {
+  transform: translateX(120%);
+  transition: transform 0.55s ease;
+}
+.btn-auth-submit:active { transform: scale(0.97) !important; }
+/* Ripple */
+.btn-auth-submit .ripple {
+  position: absolute; border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  transform: scale(0); animation: rippleAnim 0.55s linear;
+  pointer-events: none;
+}
+@keyframes rippleAnim {
+  to { transform: scale(4); opacity: 0; }
+}
+/* Loading state */
+.btn-auth-submit.loading { pointer-events: none; opacity: 0.85; }
+.btn-auth-submit .btn-text { transition: opacity 0.2s ease; }
+.btn-auth-submit .btn-spinner {
+  display: none; width: 18px; height: 18px;
+  border: 2px solid rgba(255,255,255,0.3); border-top-color: #fff;
+  border-radius: 50%; animation: spin 0.6s linear infinite;
+  position: absolute; left: 50%; top: 50%; margin: -9px 0 0 -9px;
+}
+.btn-auth-submit.loading .btn-text { opacity: 0; }
+.btn-auth-submit.loading .btn-spinner { display: block; }
+
+/* Social buttons */
+.auth-social-btn {
+  background: rgba(255,255,255,0.04) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+  border-radius: 12px !important;
+  transition: all 0.22s ease !important;
+  position: relative; overflow: hidden;
+}
+.auth-social-btn::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(135deg, rgba(124,58,237,0.10), transparent);
+  opacity: 0; transition: opacity 0.2s ease; pointer-events: none;
+}
+.auth-social-btn:hover {
+  background: rgba(255,255,255,0.09) !important;
+  border-color: rgba(124,58,237,0.38) !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+}
+.auth-social-btn:hover::before { opacity: 1; }
+
+/* Divider */
+.auth-divider { animation: fadeUp 0.5s ease 0.70s both; }
+.social-btns  { animation: fadeUp 0.5s ease 0.76s both; }
+.auth-footer  { animation: fadeUp 0.5s ease 0.82s both; }
+
+/* Error banner */
+.auth-error-banner {
+  display: flex; align-items: center; gap: 10px;
+  background: rgba(239,68,68,0.09);
+  border: 1px solid rgba(239,68,68,0.28);
+  border-radius: 10px; padding: 10px 14px; margin-bottom: 16px;
+  font-size: 0.83rem; color: #f87171;
+  animation: shakeError 0.42s ease both;
+}
+@keyframes shakeError {
+  0%,100% { transform: translateX(0); }
+  20%     { transform: translateX(-7px); }
+  40%     { transform: translateX(7px); }
+  60%     { transform: translateX(-4px); }
+  80%     { transform: translateX(4px); }
+}
+
+/* Forgot modal */
+.forgot-modal-overlay {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.72); backdrop-filter: blur(8px);
+  z-index: 9999; display: flex; align-items: center; justify-content: center;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.25s ease;
+}
+.forgot-modal-overlay.open { opacity: 1; pointer-events: all; }
+.forgot-modal {
+  background: rgba(20,18,40,0.97);
+  border: 1px solid rgba(124,58,237,0.32);
+  border-radius: 16px; padding: 32px; width: 90%; max-width: 400px;
+  box-shadow: 0 24px 64px rgba(0,0,0,0.65), 0 0 0 1px rgba(124,58,237,0.12);
+  transform: translateY(22px) scale(0.95);
+  transition: transform 0.3s cubic-bezier(.22,.68,0,1.2);
+}
+.forgot-modal-overlay.open .forgot-modal { transform: translateY(0) scale(1); }
+
+/* Toasts */
+.toast-container { z-index: 10000; }
+.toast {
+  position: relative; overflow: visible !important;
+  animation: toastIn 0.45s cubic-bezier(.22,.68,0,1.2) both !important;
+  backdrop-filter: blur(10px);
+}
+.toast::before {
+  content: ''; position: absolute; inset: -2px;
+  border-radius: inherit; z-index: -1; opacity: 0;
+  animation: toastRadiate 1.1s ease-out both;
+}
+.toast.success::before { background: radial-gradient(circle, rgba(16,185,129,0.5), transparent 70%); }
+.toast.error::before   { background: radial-gradient(circle, rgba(239,68,68,0.5), transparent 70%); }
+.toast.info::before    { background: radial-gradient(circle, rgba(59,130,246,0.5), transparent 70%); }
+.toast.warning::before { background: radial-gradient(circle, rgba(245,158,11,0.5), transparent 70%); }
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(40px) scale(0.92); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+@keyframes toastRadiate {
+  0%   { opacity: 0.85; transform: scale(0.7); }
+  100% { opacity: 0;    transform: scale(2.1); }
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* auth-container needs a z-index to sit above the bg canvas */
+.auth-container { position: relative; z-index: 4; }
+
+/*
+   LIGHT MODE — dedicated design (dark mode above is untouched)
+   Frosted white glass card, ink-purple title, soft pastel aurora,
+   warm "daylight" accent blob instead of the dark violet glow.
+*/
+body.light-theme .auth-card {
+  background: rgba(255,255,255,0.88) !important;
+  backdrop-filter: blur(28px) saturate(160%) brightness(1.02);
+  -webkit-backdrop-filter: blur(28px) saturate(160%) brightness(1.02);
+  border: 1px solid rgba(20,18,38,0.08) !important;
+  box-shadow:
+    0 8px 40px rgba(80,60,140,0.14),
+    0 0 0 1px rgba(124,58,237,0.06),
+    inset 0 1px 0 rgba(255,255,255,0.9) !important;
+}
+body.light-theme .auth-card::after {
+  background: radial-gradient(ellipse at 50% -10%, rgba(124,58,237,0.07) 0%, transparent 65%);
+}
+body.light-theme .auth-title {
+  background: linear-gradient(135deg, #5b21b6 0%, #7c3aed 55%, #4c1d95 100%);
+  -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+}
+
+body.light-theme .float-input {
+  background: rgba(244,244,251,0.9);
+  border: 1px solid rgba(20,18,38,0.12);
+  color: var(--text-primary);
+}
+body.light-theme .float-input:focus {
+  background: rgba(124,58,237,0.045);
+  box-shadow: 0 0 0 3px rgba(124,58,237,0.14), 0 2px 10px rgba(124,58,237,0.08);
+}
+body.light-theme .float-label { color: rgba(70,65,100,0.62); }
+body.light-theme .float-icon-left,
+body.light-theme .float-icon-right { color: rgba(70,65,100,0.5); }
+body.light-theme .float-icon-right:hover { color: var(--text-primary); }
+
+body.light-theme .auth-step-dot { background: rgba(20,18,38,0.12); }
+
+body.light-theme .form-check-enhanced input[type="checkbox"] {
+  border: 1px solid rgba(20,18,38,0.2);
+  background: rgba(20,18,38,0.025);
+}
+
+body.light-theme .auth-social-btn {
+  background: rgba(20,18,38,0.035) !important;
+  border: 1px solid rgba(20,18,38,0.1) !important;
+}
+body.light-theme .auth-social-btn:hover {
+  background: rgba(20,18,38,0.065) !important;
+  border-color: rgba(124,58,237,0.32) !important;
+  box-shadow: 0 6px 20px rgba(80,60,140,0.12);
+}
+
+body.light-theme .forgot-modal-overlay { background: rgba(244,244,251,0.75); backdrop-filter: blur(8px); }
+body.light-theme .forgot-modal {
+  background: rgba(255,255,255,0.98);
+  border: 1px solid rgba(124,58,237,0.18);
+  box-shadow: 0 24px 64px rgba(80,60,140,0.18), 0 0 0 1px rgba(124,58,237,0.06);
+}
+
+/* Softer, more transparent orbs so they read as pastel haze, not a dark glow */
+body.light-theme .orb-1 { background: radial-gradient(circle, rgba(124,58,237,0.14) 0%, transparent 70%); }
+body.light-theme .orb-2 { background: radial-gradient(circle, rgba(251,191,110,0.16) 0%, transparent 70%); }
+body.light-theme .orb-3 { background: radial-gradient(circle, rgba(167,139,250,0.10) 0%, transparent 70%); }
+</style>
+</head>
+<body>
+<script>(function(){try{var t=localStorage.getItem('ojashdesk_theme')||'dark';var r=t;if(t==='system'){r=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}var c=r==='light'?'light-theme':'dark-theme';document.documentElement.classList.add(c);document.body.classList.add(c);}catch(e){}})();</script>
+
+<!-- Aurora / mesh gradient canvas — sits at the very back -->
+<canvas id="bg-canvas"></canvas>
+<!-- Particle network canvas -->
+<canvas id="particles-canvas"></canvas>
+
+<!-- Floating orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<div class="auth-page">
+  <div class="auth-container">
+    <div class="auth-card">
+
+      <!-- Signal strip -->
+      <div class="signal-strip" id="signalStrip">
+        <div id="signalDot"></div>
+        <svg viewBox="0 0 400 40" preserveAspectRatio="none">
+          <path class="signal-path idle"
+            d="M0,20 L55,20 L65,20 L73,5 L81,35 L89,20 L115,20 L400,20"
+            pathLength="546"/>
+          <path class="signal-path spike"
+            d="M0,20 L138,20 L148,20 L156,3 L164,37 L172,9 L180,29 L188,20 L400,20"
+            pathLength="700"/>
+        </svg>
+      </div>
+
+      <!-- Logo -->
+      <div class="auth-logo">
+        <div class="auth-logo-icon">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+        </div>
+        <div>
+          <div class="auth-logo-text">Ojash Desk</div>
+          <div class="auth-logo-sub">Support Workspace</div>
+        </div>
+      </div>
+
+      <!-- Step dots -->
+      <div class="auth-steps">
+        <div class="auth-step-dot active"></div>
+        <div class="auth-step-dot"></div>
+      </div>
+
+      <div class="auth-title" id="authTitle">Welcome back</div>
+      <div class="auth-subtitle" style="margin-bottom:24px;">Log in to manage your support tickets</div>
+
+      <!-- Error Banner -->
+      <div id="loginError" class="auth-error-banner hidden">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Invalid email or password. Try again.
+      </div>
+
+      <form id="loginForm" autocomplete="on">
+
+        <div class="float-group">
+          <input class="float-input" type="email" id="loginEmail" placeholder="email" autocomplete="email" required autofocus>
+          <label class="float-label" for="loginEmail">Email address</label>
+          <span class="float-icon-left">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+          </span>
+        </div>
+
+        <div class="float-group">
+          <input class="float-input" type="password" id="loginPassword" placeholder="password" autocomplete="current-password" required>
+          <label class="float-label" for="loginPassword">Password</label>
+          <span class="float-icon-left">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+          </span>
+          <span class="float-icon-right" id="toggleLoginPassword">
+            <svg id="eyeOpen" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            <svg id="eyeClosed" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none"><path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0112 4c7 0 11 8 11 8a18.5 18.5 0 01-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>
+          </span>
+        </div>
+
+        <div class="auth-extras">
+          <label class="form-check-enhanced">
+            <input type="checkbox" id="rememberMe">
+            Remember me for 30 days
+          </label>
+          <a href="#" class="forgot-link" id="forgotPasswordLink" style="margin:0;font-size:0.8rem;">Forgot password?</a>
+        </div>
+
+        <button type="submit" class="btn-auth-submit" id="loginBtn">
+          <span class="btn-text">Log In →</span>
+          <div class="btn-spinner"></div>
+        </button>
+      </form>
+
+      <div class="auth-divider" style="margin:22px 0 16px;">OR CONTINUE WITH</div>
+
+      <div class="social-btns">
+        <button class="auth-social-btn" id="googleLoginBtn" style="margin-bottom:10px;">
+          <svg width="16" height="16" viewBox="0 0 24 24"><path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/><path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/><path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/><path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/></svg>
+          Continue with Google
+        </button>
+        <button class="auth-social-btn" id="githubLoginBtn">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.02c-3.34.73-4.04-1.61-4.04-1.61-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.11-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.12-.3-.54-1.52.12-3.18 0 0 1.01-.32 3.3 1.23a11.5 11.5 0 016 0c2.29-1.55 3.3-1.23 3.3-1.23.66 1.66.24 2.88.12 3.18.77.84 1.24 1.91 1.24 3.22 0 4.61-2.81 5.63-5.49 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.83.58A12 12 0 0012 0z"/></svg>
+          Continue with GitHub
+        </button>
+      </div>
+
+      <div class="auth-footer" style="margin-top:20px;">
+        Don't have an account? <a href="register.html">Sign up free</a>
+      </div>
+      <div class="auth-footer" style="margin-top:6px;">
+        Are you a customer? <a href="customer-portal.html">Go to Customer Portal</a>
+      </div>
+
+    </div>
+    <div class="auth-logo-sub" style="margin-top:20px; text-align:center;">
+      © 2026 Ojash Desk · Owned by Ojash Singh
+    </div>
+  </div>
+</div>
+
+<!-- Forgot Password Modal -->
+<div class="forgot-modal-overlay" id="forgotModal">
+  <div class="forgot-modal">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;">
+      <div style="font-size:1.05rem;font-weight:700;color:var(--text-primary);">Reset your password</div>
+      <button id="closeForgotModal" style="background:none;border:none;color:var(--text-muted);font-size:1.2rem;cursor:pointer;line-height:1;padding:4px;">✕</button>
+    </div>
+    <p style="font-size:0.83rem;color:var(--text-secondary);margin-bottom:18px;line-height:1.6;">
+      Enter your email and we'll open a reset request to our support team.
+    </p>
+    <div class="float-group" style="animation:none;">
+      <input class="float-input" type="email" id="forgotEmail" placeholder="email">
+      <label class="float-label" for="forgotEmail">Email address</label>
+      <span class="float-icon-left">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16a2 2 0 012 2v12a2 2 0 01-2 2H4a2 2 0 01-2-2V6a2 2 0 012-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </span>
+    </div>
+    <button id="sendForgotBtn" class="btn-auth-submit" style="margin-top:8px;">
+      <span class="btn-text">Send Reset Request</span>
+      <div class="btn-spinner"></div>
+    </button>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="data.js"></script>
+<script src="api.js"></script>
+<script src="app.js"></script>
+<script src="oauth.js"></script>
+<script>
+/*
+   1. AURORA BACKGROUND CANVAS
+   Slow-moving colour blobs — deep purple / violet / midnight blue.
+   Replaces the broken CSS background-position animation.
+*/
+(function() {
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  const isLight = document.body.classList.contains('light-theme');
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  // Background fill + blobs — dark: deep violet glow. Light: soft pastel
+  // aurora with a warm "daylight" accent blob instead of a 5th violet one.
+  const blobsDark = [
+    { x: 0.20, y: 0.50, r: 0.45, hue: 263, sat: 70, lig: 40, alpha: 0.22, speed: 0.00018, phase: 0.0  },
+    { x: 0.80, y: 0.20, r: 0.38, hue: 250, sat: 60, lig: 35, alpha: 0.16, speed: 0.00013, phase: 1.2  },
+    { x: 0.60, y: 0.80, r: 0.32, hue: 275, sat: 65, lig: 45, alpha: 0.13, speed: 0.00021, phase: 2.4  },
+    { x: 0.10, y: 0.85, r: 0.28, hue: 240, sat: 55, lig: 30, alpha: 0.12, speed: 0.00015, phase: 0.8  },
+    { x: 0.90, y: 0.65, r: 0.30, hue: 285, sat: 60, lig: 42, alpha: 0.11, speed: 0.00017, phase: 3.5  },
+  ];
+  const blobsLight = [
+    { x: 0.20, y: 0.50, r: 0.45, hue: 263, sat: 60, lig: 88, alpha: 0.16, speed: 0.00018, phase: 0.0  },
+    { x: 0.80, y: 0.20, r: 0.38, hue: 250, sat: 55, lig: 90, alpha: 0.13, speed: 0.00013, phase: 1.2  },
+    { x: 0.60, y: 0.80, r: 0.32, hue: 275, sat: 55, lig: 90, alpha: 0.10, speed: 0.00021, phase: 2.4  },
+    { x: 0.10, y: 0.85, r: 0.28, hue: 38,  sat: 75, lig: 88, alpha: 0.10, speed: 0.00015, phase: 0.8  }, // warm daylight accent
+    { x: 0.90, y: 0.65, r: 0.30, hue: 285, sat: 50, lig: 92, alpha: 0.09, speed: 0.00017, phase: 3.5  },
+  ];
+  const blobs = isLight ? blobsLight : blobsDark;
+  const baseFill = isLight ? '#f4f4fb' : '#0d0d14';
+
+  let t = 0;
+  function draw() {
+    t++;
+    ctx.fillStyle = baseFill;
+    ctx.fillRect(0, 0, W, H);
+
+    blobs.forEach(b => {
+      const ox = Math.sin(t * b.speed * 1.1 + b.phase) * 0.12;
+      const oy = Math.cos(t * b.speed * 0.9 + b.phase + 1) * 0.10;
+      const cx = (b.x + ox) * W;
+      const cy = (b.y + oy) * H;
+      const radius = b.r * Math.min(W, H);
+
+      const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, radius);
+      grad.addColorStop(0, `hsla(${b.hue},${b.sat}%,${b.lig}%,${b.alpha})`);
+      grad.addColorStop(0.5, `hsla(${b.hue},${b.sat}%,${b.lig}%,${b.alpha * 0.4})`);
+      grad.addColorStop(1, `hsla(${b.hue},${b.sat}%,${b.lig}%,0)`);
+
+      ctx.beginPath();
+      ctx.fillStyle = grad;
+      ctx.arc(cx, cy, radius, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/* 2. PARTICLE NETWORK */
+(function() {
+  const canvas = document.getElementById('particles-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [], mouse = {x: -1000, y: -1000};
+  const isLight = document.body.classList.contains('light-theme');
+  const lineAlphaBase = isLight ? 0.10 : 0.13;
+  const dotLightness  = isLight ? 50 : 72;
+
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 80; i++) {
+    particles.push({
+      x: Math.random() * W, y: Math.random() * H,
+      r: Math.random() * 1.8 + 0.3,
+      vx: (Math.random() - 0.5) * 0.22,
+      vy: (Math.random() - 0.5) * 0.22,
+      alpha: Math.random() * 0.45 + 0.08,
+      hue: 248 + Math.random() * 42
+    });
+  }
+
+  window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Connection lines
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i+1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist = Math.sqrt(dx*dx + dy*dy);
+        if (dist < 115) {
+          ctx.beginPath();
+          ctx.strokeStyle = `rgba(124,58,237,${lineAlphaBase * (1 - dist/115)})`;
+          ctx.lineWidth = 0.5;
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.stroke();
+        }
+      }
+    }
+
+    particles.forEach(p => {
+      const mdx = p.x - mouse.x, mdy = p.y - mouse.y;
+      const md = Math.sqrt(mdx*mdx + mdy*mdy);
+      if (md < 110) { p.vx += mdx/md * 0.06; p.vy += mdy/md * 0.06; }
+      const spd = Math.sqrt(p.vx*p.vx + p.vy*p.vy);
+      if (spd > 1.2) { p.vx *= 0.97; p.vy *= 0.97; }
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+
+      ctx.beginPath();
+      const g = ctx.createRadialGradient(p.x, p.y, 0, p.x, p.y, p.r * 3);
+      g.addColorStop(0, `hsla(${p.hue},70%,${dotLightness}%,${p.alpha})`);
+      g.addColorStop(1, `hsla(${p.hue},70%,${dotLightness}%,0)`);
+      ctx.fillStyle = g;
+      ctx.arc(p.x, p.y, p.r * 3, 0, Math.PI * 2);
+      ctx.fill();
+    });
+
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+/*
+   3. SIGNAL DOT — JS-driven travel along the path
+   (replaces broken CSS offset-path animation)
+*/
+(function() {
+  const strip = document.getElementById('signalStrip');
+  const dot   = document.getElementById('signalDot');
+  const svg   = strip.querySelector('svg');
+  // Waypoints roughly matching the idle SVG path in viewBox coords (0–400 x, 0–40 y)
+  const waypoints = [
+    {x:0,y:20},{x:55,y:20},{x:65,y:20},{x:73,y:5},{x:81,y:35},{x:89,y:20},{x:115,y:20},{x:400,y:20}
+  ];
+  let t = 0;
+  const totalDist = 400; // approx path length
+
+  function dotTick() {
+    if (strip.classList.contains('active')) { requestAnimationFrame(dotTick); return; }
+
+    t = (t + 0.6) % totalDist; // px per frame along path
+    const progress = t / totalDist;
+
+    // Interpolate through waypoints by cumulative distance
+    let cumDist = 0;
+    const segs = [];
+    for (let i = 1; i < waypoints.length; i++) {
+      const dx = waypoints[i].x - waypoints[i-1].x;
+      const dy = waypoints[i].y - waypoints[i-1].y;
+      const d = Math.sqrt(dx*dx + dy*dy);
+      segs.push({from: waypoints[i-1], to: waypoints[i], d, start: cumDist});
+      cumDist += d;
+    }
+    const target = progress * cumDist;
+    let px = waypoints[0].x, py = waypoints[0].y;
+    for (const seg of segs) {
+      if (target >= seg.start && target <= seg.start + seg.d) {
+        const f = (target - seg.start) / seg.d;
+        px = seg.from.x + (seg.to.x - seg.from.x) * f;
+        py = seg.from.y + (seg.to.y - seg.from.y) * f;
+        break;
+      }
+    }
+
+    // Map from viewBox (0–400, 0–40) to element pixels
+    const rect = svg.getBoundingClientRect();
+    const stripRect = strip.getBoundingClientRect();
+    const scaleX = rect.width / 400;
+    const scaleY = rect.height / 40;
+
+    dot.style.left = (px * scaleX) + 'px';
+    dot.style.top  = (py * scaleY) + 'px';
+
+    // Fade in/out at edges
+    const fade = Math.sin(progress * Math.PI);
+    dot.style.opacity = String(Math.min(fade * 2, 0.95));
+
+    requestAnimationFrame(dotTick);
+  }
+  requestAnimationFrame(dotTick);
+})();
+
+/* 4. MAGNETIC BUTTON EFFECT */
+(function() {
+  const btn = document.getElementById('loginBtn');
+  if (!btn) return;
+  let isHovering = false;
+
+  btn.addEventListener('mouseenter', () => { isHovering = true; });
+  btn.addEventListener('mouseleave', () => {
+    isHovering = false;
+    btn.style.transform = '';
+  });
+  btn.addEventListener('mousemove', function(e) {
+    if (!isHovering) return;
+    const rect = btn.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top  + rect.height / 2;
+    const dx = (e.clientX - cx) / (rect.width  / 2);
+    const dy = (e.clientY - cy) / (rect.height / 2);
+    btn.style.transform = `translate(${dx * 5}px, ${dy * 4}px) translateY(-2px)`;
+  });
+
+  // Ripple on click
+  btn.addEventListener('click', function(e) {
+    const rect = btn.getBoundingClientRect();
+    const r = document.createElement('span');
+    r.className = 'ripple';
+    const size = Math.max(rect.width, rect.height);
+    r.style.cssText = `width:${size}px;height:${size}px;left:${e.clientX - rect.left - size/2}px;top:${e.clientY - rect.top - size/2}px`;
+    btn.appendChild(r);
+    setTimeout(() => r.remove(), 600);
+  });
+})();
+
+/*
+   5. TYPING CURSOR ON TITLE — removed (looked like
+   a stray editable text caret next to the heading)
+*/
+
+/* 6. PASSWORD TOGGLE */
+document.getElementById('toggleLoginPassword').addEventListener('click', function() {
+  const inp = document.getElementById('loginPassword');
+  const isPass = inp.type === 'password';
+  inp.type = isPass ? 'text' : 'password';
+  document.getElementById('eyeOpen').style.display  = isPass ? 'none' : '';
+  document.getElementById('eyeClosed').style.display = isPass ? '' : 'none';
+});
+
+/* 7. LOGIN FORM */
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  const email    = document.getElementById('loginEmail').value.trim();
+  const password = document.getElementById('loginPassword').value;
+  const errBox   = document.getElementById('loginError');
+  const btn      = document.getElementById('loginBtn');
+  const signal   = document.getElementById('signalStrip');
+
+  btn.classList.add('loading');
+  signal.classList.add('active');
+
+  const tryLogin = async () => {
+    let match = null;
+
+    // 1. Try backend API first
+    if (window.OjashApi) {
+      try {
+        const result = await window.OjashApi.login(email, password);
+        if (result && result.id && !result.error) {
+          match = result;
+        }
+      } catch (e) {
+        console.warn('Backend login failed, trying local...', e.message);
+      }
+    }
+
+    // 2. Fall back to localStorage if backend not available
+    if (!match) {
+      const users = JSON.parse(localStorage.getItem('ojashdesk_users') || '[]');
+      const agentDefault = { email: 'ojash@ojashdesk.com', password: 'admin123', name: 'Ojash Singh', role: 'Admin' };
+      const emailLower = email.toLowerCase();
+      match = [agentDefault, ...users].find(u => u.email.toLowerCase() === emailLower && u.password === password);
+    }
+
+    btn.classList.remove('loading');
+
+    if (match) {
+      errBox.classList.add('hidden');
+      localStorage.setItem('ojashdesk_current_user', JSON.stringify(match));
+      document.querySelectorAll('.auth-step-dot')[1].classList.add('active');
+      showToast('Welcome back, ' + match.name + '!', 'success');
+      setTimeout(() => window.location.href = 'index.html', 700);
+    } else {
+      errBox.classList.remove('hidden');
+      errBox.style.animation = 'none';
+      requestAnimationFrame(() => { errBox.style.animation = ''; });
+      signal.classList.remove('active');
+    }
+  };
+
+  tryLogin();
+});
+
+/* 8. FORGOT PASSWORD */
+document.getElementById('forgotPasswordLink').addEventListener('click', function(e) {
+  e.preventDefault();
+  const emailVal = document.getElementById('loginEmail').value.trim();
+  if (emailVal) document.getElementById('forgotEmail').value = emailVal;
+  document.getElementById('forgotModal').classList.add('open');
+  setTimeout(() => document.getElementById('forgotEmail').focus(), 100);
+});
+document.getElementById('closeForgotModal').addEventListener('click', function() {
+  document.getElementById('forgotModal').classList.remove('open');
+});
+document.getElementById('forgotModal').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+document.getElementById('sendForgotBtn').addEventListener('click', function() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  if (!email) { showToast('Please enter your email address.', 'warning'); return; }
+  const btn = this;
+  btn.classList.add('loading');
+  setTimeout(() => {
+    btn.classList.remove('loading');
+    document.getElementById('forgotModal').classList.remove('open');
+    const subject = encodeURIComponent('Password Reset Request – Ojash Desk');
+    const body    = encodeURIComponent('Hello Ojash Desk Support,\n\nI would like to reset the password for: ' + email + '\n\nPlease send me a reset link.\n\nThank you.');
+    window.open('https://mail.google.com/mail/?view=cm&fs=1&to=ojash%40ojashdesk.com&su=' + subject + '&body=' + body, '_blank');
+    showToast('Opening Gmail to send your reset request…', 'info');
+  }, 800);
+});
+
+/* 9. OAUTH */
+document.getElementById('googleLoginBtn').addEventListener('click', function() {
+  handleOAuthLogin('google', 'index.html');
+});
+document.getElementById('githubLoginBtn').addEventListener('click', function() {
+  handleOAuthLogin('github', 'index.html');
+});
+
+/* 10. TOAST */
+function showToast(msg, type) {
+  const c = document.getElementById('toastContainer');
+  const t = document.createElement('div');
+  t.className = 'toast ' + (type || 'info');
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => {
+    t.style.animation = 'slideOut .3s ease';
+    setTimeout(() => t.remove(), 300);
+  }, 2500);
+}
+</script>
+<script src="fixes.js"></script>
+</body>
+</html>

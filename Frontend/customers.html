@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Customers · Ojash Desk</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<script>(function(){try{var t=localStorage.getItem('ojashdesk_theme')||'dark';var r=t;if(t==='system'){r=(window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches)?'dark':'light';}var c=r==='light'?'light-theme':'dark-theme';document.documentElement.classList.add(c);document.body.classList.add(c);}catch(e){}})();</script>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+<div class="app-shell">
+
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-logo">
+      <div class="sidebar-logo-icon">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2L3 14h7l-1 8 10-12h-7l1-8z"/></svg>
+      </div>
+      <div>
+        <div class="sidebar-logo-text">Ojash Desk</div>
+        <div class="sidebar-logo-sub">Support Workspace</div>
+      </div>
+    </div>
+
+    <button class="sidebar-new-btn" id="newTicketBtn">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+      New Ticket
+    </button>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-label">Main</div>
+      <a class="nav-item" href="home.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12l9-9 9 9"/><path d="M9 21V12h6v9"/></svg>
+        Home
+      </a>
+      <a class="nav-item" href="index.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.45 5.11L2 12v6a2 2 0 002 2h16a2 2 0 002-2v-6l-3.45-6.89A2 2 0 0016.76 4H7.24a2 2 0 00-1.79 1.11z"/></svg>
+        Inbox
+        <span class="nav-badge">14</span>
+      </a>
+      <a class="nav-item" href="tickets.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.59 13.41L11 23l-9-9 9.59-9.59A2 2 0 0113 4h7v7a2 2 0 01-.41 1.41z"/><circle cx="14.5" cy="9.5" r="1.5"/></svg>
+        Tickets
+      </a>
+      <a class="nav-item active" href="customers.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        Customers
+      </a>
+      <a class="nav-item" href="customer-portal.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.13.96.36 1.9.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0122 16.92z"/></svg>
+        Contacts
+      </a>
+      <a class="nav-item" href="live-chat.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+        Live Chat
+      </a>
+      <a class="nav-item" href="knowledge-base.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+        Knowledge Base
+      </a>
+      <a class="nav-item" href="analytics.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        Analytics
+      </a>
+      <a class="nav-item" href="billing.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="1" y="4" width="22" height="16" rx="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>
+        Billing
+      </a>
+      <a class="nav-item" href="settings.html">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 11-2.83 2.83l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 11-4 0v-.09a1.65 1.65 0 00-1-1.51 1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 11-2.83-2.83l.06-.06a1.65 1.65 0 00.33-1.82 1.65 1.65 0 00-1.51-1H3a2 2 0 110-4h.09a1.65 1.65 0 001.51-1 1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 112.83-2.83l.06.06a1.65 1.65 0 001.82.33h0a1.65 1.65 0 001-1.51V3a2 2 0 114 0v.09a1.65 1.65 0 001 1.51h0a1.65 1.65 0 001.82-.33l.06-.06a2 2 0 112.83 2.83l-.06.06a1.65 1.65 0 00-.33 1.82v0a1.65 1.65 0 001.51 1H21a2 2 0 110 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>
+        Settings
+      </a>
+
+      <div class="sidebar-section-label">Views</div>
+      <a class="nav-item" href="tickets.html?view=mine">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a8 8 0 0116 0v1"/></svg>
+        My Tickets
+        <span class="nav-badge gray">8</span>
+      </a>
+      <a class="nav-item" href="tickets.html?view=unassigned">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        Unassigned
+        <span class="nav-badge gray">5</span>
+      </a>
+      <a class="nav-item" href="tickets.html?view=high-priority">
+        <svg class="nav-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 22h20L12 2z"/><line x1="12" y1="10" x2="12" y2="15"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+        High Priority
+        <span class="nav-badge gray">7</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-user dropdown" id="sidebarUserMenu">
+      <div class="sidebar-user-avatar av-purple" id="sbAvatar">OS</div>
+      <div class="sidebar-user-info">
+        <div class="sidebar-user-name" id="sbName">Ojash Singh</div>
+        <div class="sidebar-user-role" id="sbRole">Admin</div>
+      </div>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+      <div class="dropdown-menu" id="sidebarUserDropdown">
+        <a class="dropdown-item" href="settings.html">My Profile</a>
+        <a class="dropdown-item" href="settings.html">Settings</a>
+        <div class="dropdown-divider"></div>
+        <a class="dropdown-item danger" href="login.html">Log Out</a>
+      </div>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="topbar">
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <div class="topbar-title">Customers</div>
+      <div class="search-bar topbar-search">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="customerSearch" placeholder="Search customers...">
+      </div>
+      <div class="topbar-right">
+        <button class="btn btn-primary btn-sm" id="addCustomerBtn">+ Add Customer</button>
+        <div class="dropdown" id="topbarAvatarMenu">
+          <div class="topbar-avatar av-purple" id="tbAvatar">OS</div>
+          <div class="dropdown-menu" id="topbarAvatarDropdown">
+            <a class="dropdown-item" href="settings.html">My Profile</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item danger" href="login.html">Log Out</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="page active">
+      <div class="page-body">
+
+        <div class="page-header">
+          <div>
+            <div class="page-title">Customers</div>
+            <div class="page-subtitle">View and manage all customer accounts</div>
+          </div>
+          <div class="flex gap-2">
+            <button class="btn btn-secondary btn-sm" id="exportCustomersBtn">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+              Export
+            </button>
+            <button class="btn btn-primary btn-sm" id="addCustomerBtn2">+ Add Customer</button>
+          </div>
+        </div>
+
+        <!-- Stats Row -->
+        <div class="stats-grid" style="grid-template-columns:repeat(4,1fr);margin-bottom:24px;">
+          <div class="stat-card accent-purple">
+            <div class="stat-label">Total Customers</div>
+            <div class="stat-value">1,284</div>
+            <div class="stat-change up">↑ 12% this month</div>
+            <div class="stat-icon" style="background:rgba(124,58,237,0.15);">👥</div>
+          </div>
+          <div class="stat-card accent-green">
+            <div class="stat-label">Active Customers</div>
+            <div class="stat-value">947</div>
+            <div class="stat-change up">↑ 8% this month</div>
+            <div class="stat-icon" style="background:rgba(16,185,129,0.15);">✅</div>
+          </div>
+          <div class="stat-card accent-blue">
+            <div class="stat-label">VIP Customers</div>
+            <div class="stat-value">89</div>
+            <div class="stat-change up">↑ 3 new</div>
+            <div class="stat-icon" style="background:rgba(59,130,246,0.15);">⭐</div>
+          </div>
+          <div class="stat-card accent-yellow">
+            <div class="stat-label">Avg CSAT Score</div>
+            <div class="stat-value">4.7</div>
+            <div class="stat-change up">↑ 0.2 pts</div>
+            <div class="stat-icon" style="background:rgba(245,158,11,0.15);">😊</div>
+          </div>
+        </div>
+
+        <!-- Filters + View Toggle -->
+        <div class="table-wrapper">
+          <div class="table-toolbar" style="gap:10px;">
+            <div class="ticket-filter-tabs">
+              <button class="filter-tab active" data-cfilter="all">All <span class="count">1284</span></button>
+              <button class="filter-tab" data-cfilter="vip">VIP <span class="count">89</span></button>
+              <button class="filter-tab" data-cfilter="active">Active <span class="count">947</span></button>
+              <button class="filter-tab" data-cfilter="inactive">Inactive <span class="count">337</span></button>
+            </div>
+            <select class="form-select" id="planFilter" style="width:140px;margin-left:auto;">
+              <option value="">All Plans</option>
+              <option value="free">Free</option>
+              <option value="pro">Pro</option>
+              <option value="enterprise">Enterprise</option>
+            </select>
+            <div class="flex gap-2">
+              <button class="btn btn-secondary btn-sm view-toggle active" data-view="table" id="tableViewBtn" title="Table view">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+              </button>
+              <button class="btn btn-secondary btn-sm view-toggle" data-view="grid" id="gridViewBtn" title="Grid view">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+              </button>
+            </div>
+          </div>
+
+          <!-- Table View -->
+          <div id="customerTableView">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th><input type="checkbox" id="selectAllCustomers"></th>
+                  <th>Customer</th>
+                  <th>Email</th>
+                  <th>Plan</th>
+                  <th>Tickets</th>
+                  <th>CSAT</th>
+                  <th>Location</th>
+                  <th>Joined</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="customersTableBody">
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <div class="ticket-avatar av-blue" style="width:32px;height:32px;font-size:0.75rem;">AS</div>
+                      <div>
+                        <div style="font-weight:500;color:var(--text-primary);font-size:0.85rem;">Aarav Sharma</div>
+                        <div style="font-size:0.7rem;color:var(--text-muted);">VIP Customer</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>aarav.sharma@gmail.com</td>
+                  <td><span class="badge badge-brand">Pro</span></td>
+                  <td>12</td>
+                  <td><span style="color:#f59e0b;">★ 4.8</span></td>
+                  <td>Mumbai, Maharashtra</td>
+                  <td>Jan 2023</td>
+                  <td><span class="badge badge-resolved">Active</span></td>
+                  <td>
+                    <div class="dropdown" style="position:relative;">
+                      <button class="btn btn-ghost btn-sm cust-action-btn">···</button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <div class="ticket-avatar av-pink" style="width:32px;height:32px;font-size:0.75rem;">SK</div>
+                      <div>
+                        <div style="font-weight:500;color:var(--text-primary);font-size:0.85rem;">Sneha Kapoor</div>
+                        <div style="font-size:0.7rem;color:var(--text-muted);">Regular Customer</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>sneha.kapoor@company.com</td>
+                  <td><span class="badge badge-brand">Pro</span></td>
+                  <td>7</td>
+                  <td><span style="color:#f59e0b;">★ 4.5</span></td>
+                  <td>Bengaluru, Karnataka</td>
+                  <td>Mar 2023</td>
+                  <td><span class="badge badge-resolved">Active</span></td>
+                  <td><button class="btn btn-ghost btn-sm">···</button></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <div class="ticket-avatar av-red" style="width:32px;height:32px;font-size:0.75rem;">VY</div>
+                      <div>
+                        <div style="font-weight:500;color:var(--text-primary);font-size:0.85rem;">Vikram Yadav</div>
+                        <div style="font-size:0.7rem;color:var(--text-muted);">Regular Customer</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>vikram.yadav@firm.io</td>
+                  <td><span class="badge badge-open">Free</span></td>
+                  <td>4</td>
+                  <td><span style="color:#f59e0b;">★ 3.9</span></td>
+                  <td>Hyderabad, Telangana</td>
+                  <td>Jun 2023</td>
+                  <td><span class="badge badge-pending">Inactive</span></td>
+                  <td><button class="btn btn-ghost btn-sm">···</button></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <div class="ticket-avatar av-teal" style="width:32px;height:32px;font-size:0.75rem;">AN</div>
+                      <div>
+                        <div style="font-weight:500;color:var(--text-primary);font-size:0.85rem;">Ananya Nair</div>
+                        <div style="font-size:0.7rem;color:var(--text-muted);">Regular Customer</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>ananya.nair@startup.co</td>
+                  <td><span class="badge" style="background:rgba(124,58,237,0.2);color:var(--brand-light);">Enterprise</span></td>
+                  <td>23</td>
+                  <td><span style="color:#f59e0b;">★ 4.9</span></td>
+                  <td>Singapore</td>
+                  <td>Aug 2022</td>
+                  <td><span class="badge badge-resolved">Active</span></td>
+                  <td><button class="btn btn-ghost btn-sm">···</button></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <div class="ticket-avatar av-orange" style="width:32px;height:32px;font-size:0.75rem;">RV</div>
+                      <div>
+                        <div style="font-weight:500;color:var(--text-primary);font-size:0.85rem;">Rahul Verma</div>
+                        <div style="font-size:0.7rem;color:var(--text-muted);">Regular Customer</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>rahul.verma@agency.net</td>
+                  <td><span class="badge badge-brand">Pro</span></td>
+                  <td>9</td>
+                  <td><span style="color:#f59e0b;">★ 4.2</span></td>
+                  <td>Sydney, AU</td>
+                  <td>Nov 2022</td>
+                  <td><span class="badge badge-resolved">Active</span></td>
+                  <td><button class="btn btn-ghost btn-sm">···</button></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <div class="ticket-avatar av-green" style="width:32px;height:32px;font-size:0.75rem;">KR</div>
+                      <div>
+                        <div style="font-weight:500;color:var(--text-primary);font-size:0.85rem;">Kavya Reddy</div>
+                        <div style="font-size:0.7rem;color:var(--text-muted);">VIP Customer</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>ana.cortez@corp.mx</td>
+                  <td><span class="badge" style="background:rgba(124,58,237,0.2);color:var(--brand-light);">Enterprise</span></td>
+                  <td>31</td>
+                  <td><span style="color:#f59e0b;">★ 5.0</span></td>
+                  <td>Mexico City, MX</td>
+                  <td>May 2022</td>
+                  <td><span class="badge badge-resolved">Active</span></td>
+                  <td><button class="btn btn-ghost btn-sm">···</button></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <div class="ticket-avatar av-yellow" style="width:32px;height:32px;font-size:0.75rem;">MA</div>
+                      <div>
+                        <div style="font-weight:500;color:var(--text-primary);font-size:0.85rem;">Mohit Agarwal</div>
+                        <div style="font-size:0.7rem;color:var(--text-muted);">Regular Customer</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>mark.klein@media.de</td>
+                  <td><span class="badge badge-open">Free</span></td>
+                  <td>3</td>
+                  <td><span style="color:#f59e0b;">★ 4.0</span></td>
+                  <td>Berlin, DE</td>
+                  <td>Feb 2024</td>
+                  <td><span class="badge badge-resolved">Active</span></td>
+                  <td><button class="btn btn-ghost btn-sm">···</button></td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox"></td>
+                  <td>
+                    <div class="flex items-center gap-2">
+                      <div class="ticket-avatar av-purple" style="width:32px;height:32px;font-size:0.75rem;">NJ</div>
+                      <div>
+                        <div style="font-weight:500;color:var(--text-primary);font-size:0.85rem;">Neha Patel</div>
+                        <div style="font-size:0.7rem;color:var(--text-muted);">VIP Customer</div>
+                      </div>
+                    </div>
+                  </td>
+                  <td>neha.p@techind.in</td>
+                  <td><span class="badge" style="background:rgba(124,58,237,0.2);color:var(--brand-light);">Enterprise</span></td>
+                  <td>18</td>
+                  <td><span style="color:#f59e0b;">★ 4.7</span></td>
+                  <td>Mumbai, IN</td>
+                  <td>Jul 2022</td>
+                  <td><span class="badge badge-resolved">Active</span></td>
+                  <td><button class="btn btn-ghost btn-sm">···</button></td>
+                </tr>
+              </tbody>
+            </table>
+
+            <div class="pagination">
+              <span class="text-muted text-xs" style="margin-right:auto;padding-left:14px">Showing 1-8 of 1,284 customers</span>
+              <button class="pagination-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg></button>
+              <button class="pagination-btn active">1</button>
+              <button class="pagination-btn">2</button>
+              <button class="pagination-btn">3</button>
+              <button class="pagination-btn"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+            </div>
+          </div>
+
+          <!-- Grid View (hidden by default) -->
+          <div id="customerGridView" style="display:none;padding:20px;">
+            <div class="grid-3" id="customerCardsGrid">
+              <!-- Cards injected by JS -->
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Customer Modal -->
+<div class="modal-overlay" id="addCustomerModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" id="addCustomerModalTitle">Add New Customer</div>
+      <button class="modal-close" id="closeAddCustomerModal">✕</button>
+    </div>
+    <form id="addCustomerForm">
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">First Name</label>
+          <input class="form-input" type="text" id="acFirstName" placeholder="First name" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Last Name</label>
+          <input class="form-input" type="text" id="acLastName" placeholder="Last name" required>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Email Address</label>
+        <input class="form-input" type="email" id="acEmail" placeholder="customer@email.com" required>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Phone Number</label>
+        <input class="form-input" type="tel" id="acPhone" placeholder="+91 98XXX XXXXX">
+      </div>
+      <div class="grid-2">
+        <div class="form-group">
+          <label class="form-label">Company</label>
+          <input class="form-input" type="text" id="acCompany" placeholder="Company name">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Plan</label>
+          <select class="form-select" id="acPlan">
+            <option>Free</option>
+            <option>Pro</option>
+            <option>Enterprise</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="form-label">Location</label>
+        <input class="form-input" type="text" id="acLocation" placeholder="City, Country">
+      </div>
+      <div class="form-group">
+        <label class="form-label">Notes</label>
+        <textarea class="form-textarea" id="acNotes" placeholder="Any notes about this customer..." style="min-height:80px;"></textarea>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" id="cancelAddCustomer">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="addCustomerSubmitBtn">Add Customer</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Customer Detail Modal -->
+<div class="modal-overlay" id="customerDetailModal">
+  <div class="modal" style="max-width:640px;">
+    <div class="modal-header">
+      <div class="modal-title">Customer Profile</div>
+      <button class="modal-close" id="closeCustomerDetail">✕</button>
+    </div>
+    <div id="customerDetailBody">
+      <div class="flex gap-4 items-center" style="margin-bottom:20px;">
+        <div class="customer-big-avatar av-blue" style="width:64px;height:64px;font-size:1.2rem;">AS</div>
+        <div style="flex:1;">
+          <div style="font-size:1.1rem;font-weight:700;color:var(--text-primary);display:flex;align-items:center;gap:8px;">
+            Aarav Sharma <span class="badge badge-vip">VIP</span>
+          </div>
+          <div style="font-size:0.85rem;color:var(--text-secondary);margin-top:2px;">aarav.sharma@gmail.com</div>
+          <div style="font-size:0.8rem;color:var(--text-muted);margin-top:2px;">Mumbai, Maharashtra · +91 98201 34567</div>
+        </div>
+        <div class="flex gap-2">
+          <button class="btn btn-secondary btn-sm">Edit</button>
+          <button class="btn btn-primary btn-sm">New Ticket</button>
+        </div>
+      </div>
+
+      <div class="customer-stats" style="margin-bottom:20px;">
+        <div class="customer-stat">
+          <div class="customer-stat-label">Plan</div>
+          <div class="customer-stat-value">Pro</div>
+        </div>
+        <div class="customer-stat">
+          <div class="customer-stat-label">Total Tickets</div>
+          <div class="customer-stat-value">12</div>
+        </div>
+        <div class="customer-stat">
+          <div class="customer-stat-label">Avg CSAT</div>
+          <div class="customer-stat-value">4.8 ★</div>
+        </div>
+        <div class="customer-stat">
+          <div class="customer-stat-label">Since</div>
+          <div class="customer-stat-value">Jan 2023</div>
+        </div>
+      </div>
+
+      <div class="card" style="margin-bottom:16px;">
+        <div class="card-header"><div class="card-title">Recent Tickets</div></div>
+        <table class="data-table">
+          <thead><tr><th>ID</th><th>Subject</th><th>Status</th><th>Date</th></tr></thead>
+          <tbody>
+            <tr><td class="mono">#TK-1024</td><td>Unable to login to account</td><td><span class="badge badge-high">High</span></td><td>2m ago</td></tr>
+            <tr><td class="mono">#TK-1010</td><td>Reset 2FA issue</td><td><span class="badge badge-resolved">Resolved</span></td><td>2 weeks ago</td></tr>
+            <tr><td class="mono">#TK-998</td><td>Billing question</td><td><span class="badge badge-resolved">Resolved</span></td><td>1 month ago</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card">
+        <div class="card-header"><div class="card-title">CSAT Ratings</div></div>
+        <div style="display:flex;flex-direction:column;gap:8px;">
+          <div style="display:flex;align-items:center;gap:12px;font-size:0.82rem;">
+            <span style="color:var(--text-muted);width:100px;">#TK-1010</span>
+            <div class="csat-stars">
+              <span class="csat-star active">★</span><span class="csat-star active">★</span><span class="csat-star active">★</span><span class="csat-star active">★</span><span class="csat-star active">★</span>
+            </div>
+            <span style="color:var(--text-secondary);">Great support!</span>
+          </div>
+          <div style="display:flex;align-items:center;gap:12px;font-size:0.82rem;">
+            <span style="color:var(--text-muted);width:100px;">#TK-998</span>
+            <div class="csat-stars">
+              <span class="csat-star active">★</span><span class="csat-star active">★</span><span class="csat-star active">★</span><span class="csat-star active">★</span><span class="csat-star">★</span>
+            </div>
+            <span style="color:var(--text-secondary);">Fast response</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast-container" id="toastContainer"></div>
+
+<script src="data.js"></script>
+<script src="api.js"></script>
+<script src="app.js"></script>
+<script>
+// All customer page logic handled by app.js initCustomersPage()
+// No duplicate handlers needed here.
+</script>
+<script src="fixes.js"></script>
+<script src="effects.js"></script>
+</body>
+</html>
